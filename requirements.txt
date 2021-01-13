@@ -1,0 +1,7 @@
+tweepy
+requests
+pandas
+SQLAlchemy
+psycopg2
+schedule
+Pillow
