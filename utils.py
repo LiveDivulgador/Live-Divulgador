@@ -20,7 +20,7 @@ def readStreamers():
 	if os.path.exists(FILE):
 
 		try:
-			df = pd.read_csv(FILE, sep=",")
+			df = pd.read_csv(FILE, sep=",", encoding="latin-1")
 			return df
 		except:
 			# Retornar um dataframe vazio, caso o ficheiro esteja vazio

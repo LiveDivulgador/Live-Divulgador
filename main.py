@@ -1,6 +1,3 @@
-# Se tivermos o dotenv instalado, assumimos que estamos
-# num ambiente dev. Nesse caso vamos obter as variáveis de ambiente
-# do nosso ficheiro .env
 try:
 	from dotenv import load_dotenv
 	load_dotenv()
@@ -16,9 +13,10 @@ import time
 import schedule
 import threading
 
+
 def main():
-	
-	# Variável que controla se houve
+
+	# Variável que controla se o houve
 	# modificações no dados do streamer
 	modified = False
 
@@ -59,14 +57,13 @@ def main():
 				name = streamer[0]
 				idt = streamer[1]
 
-				index = streamers[streamers["Nome"]==str(name)].index
+				index = streamers[streamers["Nome"] == str(name)].index
 				streamers.loc[index, "Id"] = str(idt)
 
-			
 			# Antes de tudo vamos verificar se algum streamer
 			# trocou o nome do canal
 
-			#print(streamers)
+			# print(streamers)
 			streamers, modified = nameChanged(streamers, header)
 
 		if modified:
@@ -75,7 +72,6 @@ def main():
 
 			# Ler novamente
 			streamers = readStreamers()
-
 
 		results = returnStreamerInfo().fetchall()
 
@@ -99,10 +95,12 @@ def main():
 					twitter = streamer[3]
 					isPrint = streamer[5]
 					streamer_type = streamer[6]
+                    hashtags = streamer[7]
 
 					# Vamos fazer o tweet
 					insertOnStream(idt, True)
-					tweet(twitch, twitter, title, isPrint, streamer_type)
+					tweet(twitch, twitter, title,
+                          isPrint, streamer_type, hashtags)
 
 			else:
 				insertOnStream(idt, False)

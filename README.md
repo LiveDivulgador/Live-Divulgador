@@ -5,7 +5,7 @@ Divulgador de Twitch streams de Ciência e Tecnologia, Artes e Artesanato e Cria
 Neste repositório temos vários ficheiros e é importante entendermos o propóstio de cada um deles.
 - **.env_example**: Este ficheiro deve ser renomenado para `.env`. Dentro dele terão vários nomes(variáveis) com um valor exemplo atribuído que deve ser alterado para o valor real.
 
--  **img**: Esta pasta serve para colocar as imagens personalizadas de cada streamer.
+-  **img**: Esta pasta serve para colocar as imagens personalizadas de cada streamer. Cada imagem deve estar no formato `.png` e o nome deve ser o ID do streamer.
 
 - **streamers.csv**: Neste ficheiro devem ser preenchidas todas as colunas ***exceto*** a coluna `Id`. Apesar de o nome das mesmas ser bastante sugestivo irei explicar:
 	- **Nome**: Nome do streamer
@@ -19,6 +19,8 @@ Neste repositório temos vários ficheiros e é importante entendermos o propós
 	- **Print**: Booleano (TRUE, FALSE) que confirma se o streamer aceitou ou não o print do bot
 	
 	- **Tipo**: Categoria das streams: `code` ou `art` (art abrange não só arte, mas também artesanato e criadores)
+
+	- **Hashtags**: Hashtags que serão mostradas no tweet
 
 - **main.py**: Ficheiro de código com a lógica principal do bot
 
