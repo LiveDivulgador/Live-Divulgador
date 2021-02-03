@@ -95,7 +95,7 @@ def main():
 					twitter = streamer[3]
 					isPrint = streamer[5]
 					streamer_type = streamer[6]
-                    hashtags = streamer[7]
+					hashtags = streamer[7]
 
 					# Vamos fazer o tweet
 					insertOnStream(idt, True)
