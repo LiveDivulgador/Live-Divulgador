@@ -22,6 +22,8 @@ def getOAuth():
     }
 
     r = requests.post(url, data=param)
+    if r.status_code == 400:
+        raise ConnectionError(r.json())
 
     access_token = r.json()["access_token"]
     header = {"Client-ID": client_id, "Authorization": "Bearer " + access_token}
@@ -123,3 +125,6 @@ def nameChanged(streamers, header):
             deleteStreamer(idt)
 
     return streamers, streamers_modified
+
+
+getOAuth()
