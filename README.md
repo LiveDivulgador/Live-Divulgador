@@ -1,6 +1,10 @@
 # Live-Divulgador
 Divulgador de Twitch streams de Ciência e Tecnologia, Artes e Artesanato e Criadores no Twitter
 
+### Pré Requesitos
+- Python3.x
+- PostgreSQL
+
 # Ficheiros e pastas
 Neste repositório temos vários ficheiros e é importante entendermos o propóstio de cada um deles.
 - **.env_example**: Este ficheiro deve ser renomenado para `.env`. Dentro dele terão vários nomes(variáveis) com um valor exemplo atribuído que deve ser alterado para o valor real.
@@ -42,6 +46,14 @@ Isto criará um diretório `env` onde ficarão todos os pacotes instalados via `
 
 No fim de tudo isto bastará iniciar o bot com:
 `python main.py`
+
+## Banco de Dados
+Banco de dados PostgreSQL
+- Criar um banco com o nome `streamers`
+- Insira as credenciais no arquivo `.env` nas variáveis `user_db` e `passwd_db`
+
+Ao executar a aplicação será criado as tabelas necessárias para a aplicação.
+
 
 # Colaboração
 Se gostou do projeto e tem interesse em ajudar, pode sempre seguir as contas do bot no Twitter: [@LiveDivulgador](https://twitter.com/LiveDivulgador) e [@LiveDivulgador2](https://twitter.com/LiveDivulgador2)
