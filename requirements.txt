@@ -5,3 +5,4 @@ SQLAlchemy
 psycopg2
 schedule
 Pillow
+python-dotenv
