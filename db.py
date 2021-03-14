@@ -17,7 +17,8 @@ if passwd_db is None or passwd_db == '':
     raise ValueError('passwd_db não encontrado')
 
 try:
-    engine = create_engine("postgres://{}:{}@localhost:5432/streamers".format(user_db, passwd_db))
+    engine = create_engine(
+        "postgres://{}:{}@localhost:5432/streamers".format(user_db, passwd_db))
 
     engine.execute("CREATE TABLE IF NOT EXISTS livecoders (Nome varchar(50), Id integer,\
     Twitch varchar(150), Twitter varchar(50), OnStream boolean, Print boolean,\

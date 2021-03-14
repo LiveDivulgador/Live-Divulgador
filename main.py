@@ -15,6 +15,9 @@ def main():
     # modificações no dados do streamer
     modified = False
 
+    # Lista das categorias permitidas
+    categories = ["Art", "Science & Technology", "Makers & Crafting"]
+
     # Definir tokens e header
     access_token, header = getOAuth()
 
@@ -74,7 +77,11 @@ def main():
         for streamer in results:
             idt = streamer[1]
 
-            if isStreamerLive(str(idt), header):
+            isLive, category = isStreamerLive(str(idt), header)
+
+            # Além de verificar se está em live, verifica se está
+            # a fazer live em uma categoria permitida
+            if isLive and category in categories:
                 title = getStreamTitle(idt, header)
 
                 # Remover comandos do título

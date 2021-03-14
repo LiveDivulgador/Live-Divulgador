@@ -26,7 +26,8 @@ def getOAuth():
         raise ConnectionError(r.json())
 
     access_token = r.json()["access_token"]
-    header = {"Client-ID": client_id, "Authorization": "Bearer " + access_token}
+    header = {"Client-ID": client_id,
+              "Authorization": "Bearer " + access_token}
 
     return access_token, header
 
@@ -65,12 +66,12 @@ def isStreamerLive(streamer_id, header):
 
     r = requests.get(url, params=param, headers=header).json()
 
-    # Se sim retorna True
+    # Se sim retorna True e a categoria
     if r["data"]:
-        return True
+        return True, r["data"][0]["game_name"]
 
     # Se nao retorna False
-    return False
+    return False, None
 
 
 def getStreamTitle(streamer_id, header):
