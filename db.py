@@ -38,21 +38,21 @@ except SqlAlchemyError as e:
     exit()
 
 
-def returnStreamerInfo():
+def return_streamer_info():
     # Retonar as os valores das colunas de todos os streamers
     result = engine.execute("SELECT * FROM livecoders")
 
     return result
 
 
-def returnStreamerNames():
+def return_streamer_names():
     # Retorna o nome dos streamers
     result = engine.execute("SELECT Nome FROM livecoders")
 
     return result
 
 
-def insertStreamers(streamers):
+def insert_streamers(streamers):
     # Insere novos streamers na DB
     for index, row in streamers.iterrows():
 
@@ -72,7 +72,7 @@ def insertStreamers(streamers):
     return
 
 
-def insertOnStream(idt, value):
+def insert_on_stream(idt, value):
     # Atribui true ou false à coluna OnStream
     upd = (
         livecoders.update()
@@ -84,7 +84,7 @@ def insertOnStream(idt, value):
     return
 
 
-def updateName(idt, name, twitch):
+def update_name(idt, name, twitch):
     """ Função que atualizar o nome e o link com base no id"""
 
     # Atualizar nome
@@ -98,7 +98,7 @@ def updateName(idt, name, twitch):
     return
 
 
-def deleteStreamer(idt):
+def delete_streamer(idt):
     """ Função que elimina streamer da DB com base no id"""
     delete = livecoders.delete().where(livecoders.c.id == int(idt))
     engine.execute(delete)

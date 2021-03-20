@@ -1,10 +1,10 @@
 import db
 from twitch import (
-    getOAuth,
-    isStreamerLive,
-    nameChanged,
-    getStreamTitle,
-    getStreamerId,
+    get_OAuth,
+    is_streamer_live,
+    name_changed,
+    get_stream_title,
+    get_streamer_id,
 )
 from tt import *
 from utils import *
@@ -26,15 +26,15 @@ def main():
     categories = ["Art", "Science & Technology", "Makers & Crafting"]
 
     # Definir tokens e header
-    access_token, header = getOAuth()
+    access_token, header = get_OAuth()
 
     # DataFrame com os dados dos streamers
-    streamers = readStreamers()
+    streamers = read_streamers()
 
     # Se não estiver vazio vamos pegar os IDs
     if not streamers.empty:
         # Verificar se o streamer está registado na DB
-        results = db.returnStreamerNames().fetchall()
+        results = db.return_streamer_names().fetchall()
 
         # Guardar o nome dos streamers já registados
         names = []
@@ -42,20 +42,20 @@ def main():
             names.append(*r)
 
         # Retorno de todos os streamers que não estão na BD
-        streamers = deleteExistStreamers(streamers, names)
+        streamers = delete_exist_streamers(streamers, names)
 
         # Retornar o dataframe com o id de cada novo streamer
-        streamers = getStreamerId(streamers, header)
+        streamers = get_streamer_id(streamers, header)
 
         # Inserir cada streamer na BD
-        db.insertStreamers(streamers)
+        db.insert_streamers(streamers)
 
         if names:
             # DataFrame com os dados dos streamers
-            streamers = readStreamers()
+            streamers = read_streamers()
 
             # Retornar todas as infos dos streamers na DB
-            results = db.returnStreamerInfo().fetchall()
+            results = db.return_streamer_info().fetchall()
 
             # Preencher o dataframe com os Ids
             for streamer in results:
@@ -69,31 +69,31 @@ def main():
             # trocou o nome do canal
 
             # print(streamers)
-            streamers, modified = nameChanged(streamers, header)
+            streamers, modified = name_changed(streamers, header)
 
         if modified:
             # Guardar alterações no .csv
-            updateCSV(streamers)
+            update_csv(streamers)
 
             # Ler novamente
-            streamers = readStreamers()
+            streamers = read_streamers()
 
-        results = db.returnStreamerInfo().fetchall()
+        results = db.return_streamer_info().fetchall()
 
         # Verificar se o streamer está em live ou não
         for streamer in results:
             idt = streamer[1]
 
-            isLive, category = isStreamerLive(str(idt), header)
+            is_live, category = is_streamer_live(str(idt), header)
 
             # Além de verificar se está em live, verifica se está
             # a fazer live em uma categoria permitida
-            if isLive and category in categories:
+            if is_live and category in categories:
 
-                title = getStreamTitle(idt, header)
+                title = get_stream_title(idt, header)
 
                 # Remover comandos do título
-                title = removeCmdsFromTitle(title)
+                title = remove_cmds_from_title(title)
 
                 # Verificar se ele já estava live antes
                 # se sim não fazemos outra vez o tweet
@@ -103,23 +103,23 @@ def main():
                 if not is_live:
                     twitch = streamer[2]
                     twitter = streamer[3]
-                    isPrint = streamer[5]
+                    is_print = streamer[5]
                     streamer_type = streamer[6]
                     hashtags = streamer[7]
 
                     # Vamos fazer o tweet
-                    db.insertOnStream(idt, True)
+                    db.insert_on_stream(idt, True)
                     tweet(
                         twitch,
                         twitter,
                         title,
-                        isPrint,
+                        is_print,
                         streamer_type,
                         hashtags,
                     )
 
             else:
-                db.insertOnStream(idt, False)
+                db.insert_on_stream(idt, False)
 
     else:
         print("O DataFrame está vazio!")
