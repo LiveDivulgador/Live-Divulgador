@@ -1,6 +1,11 @@
-<<<<<<< HEAD
 import db
-from twitch import getOAuth, isStreamerLive, nameChanged, getStreamTitle, getStreamerId
+from twitch import (
+    getOAuth,
+    isStreamerLive,
+    nameChanged,
+    getStreamTitle,
+    getStreamerId,
+)
 from tt import *
 from utils import *
 import time
@@ -8,6 +13,7 @@ import schedule
 import threading
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 
@@ -103,8 +109,14 @@ def main():
 
                     # Vamos fazer o tweet
                     db.insertOnStream(idt, True)
-                    tweet(twitch, twitter, title,
-                          isPrint, streamer_type, hashtags)
+                    tweet(
+                        twitch,
+                        twitter,
+                        title,
+                        isPrint,
+                        streamer_type,
+                        hashtags,
+                    )
 
             else:
                 db.insertOnStream(idt, False)

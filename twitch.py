@@ -21,7 +21,7 @@ def getOAuth():
     param = {
         "client_id": client_id,
         "client_secret": client_secret,
-        "grant_type": "client_credentials"
+        "grant_type": "client_credentials",
     }
 
     r = requests.post(url, data=param)
@@ -29,9 +29,10 @@ def getOAuth():
         raise ConnectionError(r.json())
 
     access_token = r.json()["access_token"]
-    header = {"Client-ID": client_id,
-              "Authorization": "Bearer " + access_token}
-
+    header = {
+        "Client-ID": client_id,
+        "Authorization": "Bearer " + access_token,
+    }
 
     return access_token, header
 
@@ -68,7 +69,6 @@ def isStreamerLive(streamer_id, header):
     url = "https://api.twitch.tv/helix/streams"
     param = {"user_id": streamer_id}
 
-
     r = requests.get(url, params=param, headers=header).json()
 
     # Se sim retorna True e a categoria
@@ -89,8 +89,8 @@ def getStreamTitle(streamer_id, header):
 
 
 def nameChanged(streamers, header):
-    """ Função que verifica se o nome na base de dados está correto
-        ou se precisa alterar
+    """Função que verifica se o nome na base de dados está correto
+    ou se precisa alterar
     """
 
     # Booleano que guarda o estado de modificação do dataframe

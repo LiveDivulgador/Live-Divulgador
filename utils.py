@@ -56,7 +56,7 @@ def getImage(name):
     # Função que faz download da imagem da stream
     url = f"https://static-cdn.jtvnw.net/previews-ttv/live_user_{name}-1280x720.jpg"
 
-    img_name = name+".jpg"
+    img_name = name + ".jpg"
 
     r = requests.get(url, stream=True)
 
@@ -73,7 +73,6 @@ def getImage(name):
         img = Image.open(img_name)
 
         img.save(name + ".png")
-
 
         return name, True
 
