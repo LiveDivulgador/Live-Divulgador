@@ -2,7 +2,6 @@ import os
 from sqlalchemy import create_engine, MetaData
 from psycopg2 import OperationalError as PostgreSqlError
 from sqlalchemy.exc import OperationalError as SqlAlchemyError
-
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -53,10 +52,12 @@ def returnStreamerNames():
 def insertStreamers(streamers):
     # Insere novos streamers na DB
     for index, row in streamers.iterrows():
+
         ins = livecoders.insert() \
             .values(nome=row["Nome"], id=int(row["Id"]), twitch=row["Twitch"],
                     twitter=row["Twitter"], onstream=row["OnStream"], print=row["Print"],
                     tipo=row["Tipo"], hashtags=row["Hashtags"])
+            
 
         engine.execute(ins)
 
@@ -65,7 +66,11 @@ def insertStreamers(streamers):
 
 def insertOnStream(idt, value):
     # Atribui true ou false à coluna OnStream
-    upd = livecoders.update().values(onstream=value).where(livecoders.c.id == idt)
+    upd = (
+        livecoders.update()
+        .values(onstream=value)
+        .where(livecoders.c.id == idt)
+    )
     engine.execute(upd)
 
     return
@@ -75,8 +80,11 @@ def updateName(idt, name, twitch):
     """ Função que atualizar o nome e o link com base no id"""
 
     # Atualizar nome
-    upd = livecoders.update().values(
-        nome=name, twitch=twitch).where(livecoders.c.id == idt)
+    upd = (
+        livecoders.update()
+        .values(nome=name, twitch=twitch)
+        .where(livecoders.c.id == idt)
+    )
     engine.execute(upd)
 
     return

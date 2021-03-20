@@ -27,7 +27,7 @@ def readStreamers():
             # Retornar um dataframe vazio, caso o ficheiro esteja vazio
             return pd.DataFrame({})
     else:
-        print("O ficheiro "+FILE+" não existe!")
+        print("O ficheiro " + FILE + " não existe!")
         sys.exit(1)
 
 
@@ -55,6 +55,7 @@ def getImage(name):
 
     # Função que faz download da imagem da stream
     url = f"https://static-cdn.jtvnw.net/previews-ttv/live_user_{name}-1280x720.jpg"
+
     img_name = name+".jpg"
 
     r = requests.get(url, stream=True)
@@ -70,7 +71,9 @@ def getImage(name):
 
         # Converter a imagem para .png
         img = Image.open(img_name)
-        img.save(name+".png")
+
+        img.save(name + ".png")
+
 
         return name, True
 

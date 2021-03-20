@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import db
 from twitch import getOAuth, isStreamerLive, nameChanged, getStreamTitle, getStreamerId
 from tt import *
@@ -82,6 +83,7 @@ def main():
             # Além de verificar se está em live, verifica se está
             # a fazer live em uma categoria permitida
             if isLive and category in categories:
+
                 title = getStreamTitle(idt, header)
 
                 # Remover comandos do título

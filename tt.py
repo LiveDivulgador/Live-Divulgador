@@ -29,8 +29,9 @@ def twitter_OAuth(streamer_type):
         auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
         auth.secure = True
         auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-        api = API(auth, wait_on_rate_limit=True,
-                  wait_on_rate_limit_notify=True)
+        api = API(
+            auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True
+        )
 
     except BaseException as e:
         print("Error in twitter.py", e)
@@ -48,7 +49,7 @@ def tweet(twitch, twitter, title, isPrint, streamer_type, hashtags):
     if twitter == "NaN":
         twitter = twitch.split("/")[-1]
     else:
-        twitter = "@"+twitter
+        twitter = "@" + twitter
 
     tweet = f"""{emojis["arrow"]} {twitter} está em Live neste momento!{emojis["red_dot"]}
 
@@ -61,7 +62,7 @@ Entra aí: https://www.{twitch}
 
     # Verificar se streamer tem imagem propria
     streamer_id = get1StreamerId(twitch.split("/")[-1])
-    name_img = os.path.join(DIR_IMAGE, streamer_id+".png")
+    name_img = os.path.join(DIR_IMAGE, streamer_id + ".png")
     isStreamerImage = os.path.exists(name_img)
     isImage = False
 
@@ -74,11 +75,11 @@ Entra aí: https://www.{twitch}
     # Se conseguiu descarregar a imagem e se os streamer permitiu o print
     if isImage and isPrint:
         # Enviar tweet com media
-        api.update_with_media(name_img+".png", status=tweet)
+        api.update_with_media(name_img + ".png", status=tweet)
 
         # Elminar Imagens
-        os.remove(name_img+".png")
-        os.remove(name_img+".jpg")
+        os.remove(name_img + ".png")
+        os.remove(name_img + ".jpg")
 
     elif isStreamerImage and isPrint:
         api.update_with_media(name_img, status=tweet)

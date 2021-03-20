@@ -2,8 +2,10 @@ import requests
 import os
 from db import deleteStreamer
 
+
 client_id = os.getenv("client_id")
 client_secret = os.getenv("client_secret")
+
 
 if client_id is None or client_id == '':
     raise ValueError('client_id não encontrado')
@@ -13,6 +15,7 @@ if client_secret is None or client_secret == '':
 
 
 def getOAuth():
+
     # Obter Oauth Token
     url = "https://id.twitch.tv/oauth2/token"
     param = {
@@ -28,6 +31,7 @@ def getOAuth():
     access_token = r.json()["access_token"]
     header = {"Client-ID": client_id,
               "Authorization": "Bearer " + access_token}
+
 
     return access_token, header
 
@@ -63,6 +67,7 @@ def isStreamerLive(streamer_id, header):
     # Verificar se o streamer está em live
     url = "https://api.twitch.tv/helix/streams"
     param = {"user_id": streamer_id}
+
 
     r = requests.get(url, params=param, headers=header).json()
 
