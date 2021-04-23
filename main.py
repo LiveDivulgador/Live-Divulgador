@@ -23,7 +23,12 @@ def main():
     modified = False
 
     # Lista das categorias permitidas
-    categories = ["Art", "Science & Technology", "Makers & Crafting"]
+    categories = [
+        "Art",
+        "Science & Technology",
+        "Makers & Crafting",
+        "Talk Shows & Podcasts",
+    ]
 
     # Definir tokens e header
     access_token, header = get_OAuth()
@@ -115,6 +120,7 @@ def main():
                         title,
                         is_print,
                         streamer_type,
+                        category,
                         hashtags,
                     )
 

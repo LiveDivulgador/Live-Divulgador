@@ -40,7 +40,15 @@ def twitter_OAuth(streamer_type):
     return api
 
 
-def tweet(twitch, twitter, title, isPrint, streamer_type, hashtags):
+def tweet(twitch, twitter, title, isPrint, streamer_type, category, hashtags):
+
+    # Definir tipo de streamer com base na categoria
+    # da stream atual
+    if category == "Science & Technology":
+        streamer_type = "code"
+
+    elif category == "Art" or category == "Makers & Crafting":
+        streamer_type = "art"
 
     # Obter o objecto API
     api = twitter_OAuth(streamer_type)

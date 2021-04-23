@@ -17,7 +17,9 @@ if passwd_db is None or passwd_db == '':
 
 try:
     engine = create_engine(
-        "postgres://{}:{}@localhost:5432/streamers".format(user_db, passwd_db)
+        "postgresql://{}:{}@localhost:5432/streamers".format(
+            user_db, passwd_db
+        )
     )
 
     engine.execute(
@@ -27,7 +29,11 @@ try:
     )
 
     # Guardar objeto da table livecoders
-    metadata = MetaData(bind=engine, reflect=True)
+    metadata = MetaData(bind=engine)
+
+    # Por algum motivo o reflect=True no MetaData deixou de funcionar
+    # tendo então de chamar o método reflect
+    metadata.reflect()
 
     livecoders = metadata.tables["livecoders"]
 except PostgreSqlError as e:
