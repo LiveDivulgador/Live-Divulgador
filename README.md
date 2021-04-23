@@ -11,7 +11,7 @@ Neste repositório temos vários ficheiros e é importante entendermos o propós
 
 -  **img**: Esta pasta serve para colocar as imagens personalizadas de cada streamer. Cada imagem deve estar no formato `.png` e o nome deve ser o ID do streamer.
 
-- **streamers.csv**: Neste ficheiro devem ser preenchidas todas as colunas ***exceto*** a coluna `Id`. Apesar de o nome das mesmas ser bastante sugestivo irei explicar:
+- **ex_streamers.csv**: Este ficheiro deve ser renomeado para `streamers.csv`. Nele devem ser preenchidas todas as colunas ***exceto*** a coluna `Id`. Apesar de o nome das mesmas ser bastante sugestivo irei explicar:
 	- **Nome**: Nome do streamer
 	
 	- **Twitch**: URL da Twitch do streamer no seguinte formato: `twitch.tv/nome_do_streamer`
