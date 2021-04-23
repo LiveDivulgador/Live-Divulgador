@@ -15,6 +15,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+false/
 lib64/
 parts/
 sdist/
@@ -130,3 +131,11 @@ dmypy.json
 
 # Pycharm
 .idea
+
+# Ignore folders from dev environment
+init_scripts/
+img/
+
+# Ignire files from dev environment
+streamers.csv
+.vscode

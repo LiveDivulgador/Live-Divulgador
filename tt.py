@@ -1,6 +1,6 @@
 from tweepy import OAuthHandler, API
-from utils import getImage
-from twitch import get1StreamerId
+from utils import get_image
+from twitch import get_1_streamer_id
 import sys
 import os
 
@@ -8,7 +8,7 @@ DIR_IMAGE = os.path.abspath(os.path.dirname("."))
 DIR_IMAGE = os.path.join(DIR_IMAGE, "img")
 
 # Unicode para o círculo vermelho
-emojis = {"red_dot": u"\U0001F534", "arrow": u"\U000027A1"}
+EMOJIS = {"red_dot": u"\U0001F534", "arrow": u"\U000027A1"}
 
 
 def twitter_OAuth(streamer_type):
@@ -40,7 +40,15 @@ def twitter_OAuth(streamer_type):
     return api
 
 
-def tweet(twitch, twitter, title, isPrint, streamer_type, hashtags):
+def tweet(twitch, twitter, title, isPrint, streamer_type, category, hashtags):
+
+    # Definir tipo de streamer com base na categoria
+    # da stream atual
+    if category == "Science & Technology":
+        streamer_type = "code"
+
+    elif category == "Art" or category == "Makers & Crafting":
+        streamer_type = "art"
 
     # Obter o objecto API
     api = twitter_OAuth(streamer_type)
@@ -51,7 +59,7 @@ def tweet(twitch, twitter, title, isPrint, streamer_type, hashtags):
     else:
         twitter = "@" + twitter
 
-    tweet = f"""{emojis["arrow"]} {twitter} está em Live neste momento!{emojis["red_dot"]}
+    tweet = f"""{EMOJIS["arrow"]} {twitter} está em Live neste momento!{EMOJIS["red_dot"]}
 
 	
 {title.replace("#", " - ")}
@@ -61,19 +69,19 @@ Entra aí: https://www.{twitch}
 {hashtags}"""
 
     # Verificar se streamer tem imagem propria
-    streamer_id = get1StreamerId(twitch.split("/")[-1])
+    streamer_id = get_1_streamer_id(twitch.split("/")[-1])
     name_img = os.path.join(DIR_IMAGE, streamer_id + ".png")
-    isStreamerImage = os.path.exists(name_img)
-    isImage = False
+    is_streamer_image = os.path.exists(name_img)
+    is_image = False
 
-    if not isStreamerImage:
+    if not is_streamer_image:
 
         # Nome do ficheiro de imagem criado
         # e se conseguiu descarregar a imagem
-        name_img, isImage = getImage(twitch.split("/")[-1])
+        name_img, is_image = get_image(twitch.split("/")[-1])
 
     # Se conseguiu descarregar a imagem e se os streamer permitiu o print
-    if isImage and isPrint:
+    if is_image and isPrint:
         # Enviar tweet com media
         api.update_with_media(name_img + ".png", status=tweet)
 
@@ -81,7 +89,7 @@ Entra aí: https://www.{twitch}
         os.remove(name_img + ".png")
         os.remove(name_img + ".jpg")
 
-    elif isStreamerImage and isPrint:
+    elif is_streamer_image and isPrint:
         api.update_with_media(name_img, status=tweet)
 
     else:

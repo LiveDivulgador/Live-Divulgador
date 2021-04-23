@@ -7,16 +7,16 @@ import shutil
 from PIL import Image
 
 # Caminho absoluto deste ficheiro
-abs_path = os.path.abspath(__file__)
+ABS_PATH = os.path.abspath(__file__)
 
 # Caminho desta pasta
-dir_path = os.path.dirname(abs_path)
+DIR_PATH = os.path.dirname(ABS_PATH)
 
 # Caminho desta pasta + o ficheiro que eu quero acessar
-FILE = os.path.join(dir_path, "streamers.csv")
+FILE = os.path.join(DIR_PATH, "streamers.csv")
 
 
-def readStreamers():
+def read_streamers():
     # Ler os nomes dos streamers de um .csv
     if os.path.exists(FILE):
 
@@ -31,7 +31,7 @@ def readStreamers():
         sys.exit(1)
 
 
-def deleteExistStreamers(streamers, names):
+def delete_exist_streamers(streamers, names):
     # Eliminar Streamers que já estão na BD
     for name in names:
         i = streamers[streamers["Nome"] == name].index
@@ -40,7 +40,7 @@ def deleteExistStreamers(streamers, names):
     return streamers
 
 
-def removeCmdsFromTitle(title):
+def remove_cmds_from_title(title):
 
     # Função que remove os comandos colocados nos títulos
     # apenas por uma questão de objetividade no título
@@ -51,12 +51,12 @@ def removeCmdsFromTitle(title):
     return output
 
 
-def getImage(name):
+def get_image(name):
 
     # Função que faz download da imagem da stream
     url = f"https://static-cdn.jtvnw.net/previews-ttv/live_user_{name}-1280x720.jpg"
 
-    img_name = name+".jpg"
+    img_name = name + ".jpg"
 
     r = requests.get(url, stream=True)
 
@@ -74,13 +74,12 @@ def getImage(name):
 
         img.save(name + ".png")
 
-
         return name, True
 
     return None, False
 
 
-def updateCSV(streamers):
+def update_csv(streamers):
     """ Função encarregue de guardar as modificações num .csv"""
     os.remove(FILE)
     streamers.to_csv(FILE, sep=",", index=False)

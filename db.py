@@ -17,14 +17,23 @@ if passwd_db is None or passwd_db == '':
 
 try:
     engine = create_engine(
-        "postgres://{}:{}@localhost:5432/streamers".format(user_db, passwd_db))
+        "postgresql://{}:{}@localhost:5432/streamers".format(
+            user_db, passwd_db
+        )
+    )
 
-    engine.execute("CREATE TABLE IF NOT EXISTS livecoders (Nome varchar(50), Id integer,\
+    engine.execute(
+        "CREATE TABLE IF NOT EXISTS livecoders (Nome varchar(50), Id integer,\
     Twitch varchar(150), Twitter varchar(50), OnStream boolean, Print boolean,\
-    Tipo varchar(5), Hashtags varchar(300))")
+    Tipo varchar(5), Hashtags varchar(300))"
+    )
 
     # Guardar objeto da table livecoders
-    metadata = MetaData(bind=engine, reflect=True)
+    metadata = MetaData(bind=engine)
+
+    # Por algum motivo o reflect=True no MetaData deixou de funcionar
+    # tendo então de chamar o método reflect
+    metadata.reflect()
 
     livecoders = metadata.tables["livecoders"]
 except PostgreSqlError as e:
@@ -35,36 +44,41 @@ except SqlAlchemyError as e:
     exit()
 
 
-def returnStreamerInfo():
+def return_streamer_info():
     # Retonar as os valores das colunas de todos os streamers
     result = engine.execute("SELECT * FROM livecoders")
 
     return result
 
 
-def returnStreamerNames():
+def return_streamer_names():
     # Retorna o nome dos streamers
     result = engine.execute("SELECT Nome FROM livecoders")
 
     return result
 
 
-def insertStreamers(streamers):
+def insert_streamers(streamers):
     # Insere novos streamers na DB
     for index, row in streamers.iterrows():
 
-        ins = livecoders.insert() \
-            .values(nome=row["Nome"], id=int(row["Id"]), twitch=row["Twitch"],
-                    twitter=row["Twitter"], onstream=row["OnStream"], print=row["Print"],
-                    tipo=row["Tipo"], hashtags=row["Hashtags"])
-            
+        ins = livecoders.insert().values(
+            nome=row["Nome"],
+            id=int(row["Id"]),
+            twitch=row["Twitch"],
+            twitter=row["Twitter"],
+            onstream=row["OnStream"],
+            print=row["Print"],
+            tipo=row["Tipo"],
+            hashtags=row["Hashtags"],
+        )
 
         engine.execute(ins)
 
     return
 
 
-def insertOnStream(idt, value):
+def insert_on_stream(idt, value):
     # Atribui true ou false à coluna OnStream
     upd = (
         livecoders.update()
@@ -76,7 +90,7 @@ def insertOnStream(idt, value):
     return
 
 
-def updateName(idt, name, twitch):
+def update_name(idt, name, twitch):
     """ Função que atualizar o nome e o link com base no id"""
 
     # Atualizar nome
@@ -90,7 +104,7 @@ def updateName(idt, name, twitch):
     return
 
 
-def deleteStreamer(idt):
+def delete_streamer(idt):
     """ Função que elimina streamer da DB com base no id"""
     delete = livecoders.delete().where(livecoders.c.id == int(idt))
     engine.execute(delete)

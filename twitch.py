@@ -1,6 +1,6 @@
 import requests
 import os
-from db import deleteStreamer
+from db import delete_streamer
 
 
 client_id = os.getenv("client_id")
@@ -14,14 +14,14 @@ if client_secret is None or client_secret == '':
     raise ValueError('client_secret não encontrado')
 
 
-def getOAuth():
+def get_OAuth():
 
     # Obter Oauth Token
     url = "https://id.twitch.tv/oauth2/token"
     param = {
         "client_id": client_id,
         "client_secret": client_secret,
-        "grant_type": "client_credentials"
+        "grant_type": "client_credentials",
     }
 
     r = requests.post(url, data=param)
@@ -29,16 +29,17 @@ def getOAuth():
         raise ConnectionError(r.json())
 
     access_token = r.json()["access_token"]
-    header = {"Client-ID": client_id,
-              "Authorization": "Bearer " + access_token}
-
+    header = {
+        "Client-ID": client_id,
+        "Authorization": "Bearer " + access_token,
+    }
 
     return access_token, header
 
 
-def get1StreamerId(name):
+def get_1_streamer_id(name):
     # Obter o ID de um streamer
-    _, header = getOAuth()
+    _, header = get_OAuth()
 
     url = "https://api.twitch.tv/helix/users"
     param = {"login": name}
@@ -48,7 +49,7 @@ def get1StreamerId(name):
     return str(r["data"][0]["id"])
 
 
-def getStreamerId(streamers, header):
+def get_streamer_id(streamers, header):
     # Obter o id de cada streamer
     for streamer in streamers["Nome"]:
         url = "https://api.twitch.tv/helix/users"
@@ -63,11 +64,10 @@ def getStreamerId(streamers, header):
     return streamers
 
 
-def isStreamerLive(streamer_id, header):
+def is_streamer_live(streamer_id, header):
     # Verificar se o streamer está em live
     url = "https://api.twitch.tv/helix/streams"
     param = {"user_id": streamer_id}
-
 
     r = requests.get(url, params=param, headers=header).json()
 
@@ -79,7 +79,7 @@ def isStreamerLive(streamer_id, header):
     return False, None
 
 
-def getStreamTitle(streamer_id, header):
+def get_stream_title(streamer_id, header):
     url = "https://api.twitch.tv/helix/channels"
     param = {"broadcaster_id": streamer_id}
 
@@ -88,9 +88,9 @@ def getStreamTitle(streamer_id, header):
     return r["data"][0]["title"]
 
 
-def nameChanged(streamers, header):
-    """ Função que verifica se o nome na base de dados está correto
-        ou se precisa alterar
+def name_changed(streamers, header):
+    """Função que verifica se o nome na base de dados está correto
+    ou se precisa alterar
     """
 
     # Booleano que guarda o estado de modificação do dataframe
@@ -128,9 +128,9 @@ def nameChanged(streamers, header):
             streamers.loc[index, "Twitch"] = twitch_link
 
             # Apagar o velho valor da DB
-            deleteStreamer(idt)
+            delete_streamer(idt)
 
     return streamers, streamers_modified
 
 
-getOAuth()
+get_OAuth()
