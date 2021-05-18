@@ -1,5 +1,6 @@
 import os
 from sqlalchemy import create_engine, MetaData
+from sqlalchemy_utils import database_exists, create_database
 from psycopg2 import OperationalError as PostgreSqlError
 from sqlalchemy.exc import OperationalError as SqlAlchemyError
 from dotenv import load_dotenv
@@ -9,24 +10,40 @@ load_dotenv()
 user_db = os.getenv('user_db')
 passwd_db = os.getenv('passwd_db')
 
+# Variaveis opcionais
+host_db = os.getenv('host_db')
+port_db = os.getenv('port_db')
+
 if user_db is None or user_db == '':
     raise ValueError('user_db não encontrado')
+
 
 if passwd_db is None or passwd_db == '':
     raise ValueError('passwd_db não encontrado')
 
+if host_db is None or host_db == '':
+    host_db = "localhost" 
+    
+if port_db is None or port_db == '':
+    port_db = "5432"
+
 try:
     engine = create_engine(
-        "postgresql://{}:{}@localhost:5432/streamers".format(
-            user_db, passwd_db
+        "postgresql://{}:{}@{}:{}/streamers".format(
+            user_db, passwd_db, host_db, port_db
         )
     )
 
+    # Cria banco de dados caso não exista
+    if not database_exists(engine.url):
+        create_database(engine.url)
+
+    # Cria tabela 'livecoders' caso não exista 
     engine.execute(
         "CREATE TABLE IF NOT EXISTS livecoders (Nome varchar(50), Id integer,\
-    Twitch varchar(150), Twitter varchar(50), OnStream boolean, Print boolean,\
-    Tipo varchar(5), Hashtags varchar(300))"
-    )
+        Twitch varchar(150), Twitter varchar(50), OnStream boolean, Print boolean,\
+        Tipo varchar(5), Hashtags varchar(300))"
+        )
 
     # Guardar objeto da table livecoders
     metadata = MetaData(bind=engine)
