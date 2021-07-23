@@ -12,7 +12,7 @@ EMOJIS = {"red_dot": u"\U0001F534", "arrow": u"\U000027A1"}
 
 
 def twitter_OAuth(streamer_type):
-    """ Função que faz OAuth na conta correta"""
+    """Função que faz OAuth na conta correta"""
 
     CONSUMER_KEY = os.environ["CONSUMER_KEY_C"]
     CONSUMER_SECRET = os.environ["CONSUMER_SECRET_C"]

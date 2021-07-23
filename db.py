@@ -1,4 +1,5 @@
 import os
+from urllib.parse import quote_plus
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy_utils import database_exists, create_database
 from psycopg2 import OperationalError as PostgreSqlError
@@ -22,15 +23,17 @@ if passwd_db is None or passwd_db == '':
     raise ValueError('passwd_db não encontrado')
 
 if host_db is None or host_db == '':
-    host_db = "localhost" 
-    
+    host_db = "localhost"
+
 if port_db is None or port_db == '':
     port_db = "5432"
 
 try:
+    # Caso a password tenha caracteres especiais
+    # escapamos com o quote_plus
     engine = create_engine(
         "postgresql://{}:{}@{}:{}/streamers".format(
-            user_db, passwd_db, host_db, port_db
+            user_db, quote_plus(passwd_db), host_db, port_db
         )
     )
 
@@ -38,12 +41,12 @@ try:
     if not database_exists(engine.url):
         create_database(engine.url)
 
-    # Cria tabela 'livecoders' caso não exista 
+    # Cria tabela 'livecoders' caso não exista
     engine.execute(
         "CREATE TABLE IF NOT EXISTS livecoders (Nome varchar(50), Id integer,\
         Twitch varchar(150), Twitter varchar(50), OnStream boolean, Print boolean,\
         Tipo varchar(5), Hashtags varchar(300))"
-        )
+    )
 
     # Guardar objeto da table livecoders
     metadata = MetaData(bind=engine)
@@ -108,7 +111,7 @@ def insert_on_stream(idt, value):
 
 
 def update_name(idt, name, twitch):
-    """ Função que atualizar o nome e o link com base no id"""
+    """Função que atualizar o nome e o link com base no id"""
 
     # Atualizar nome
     upd = (
@@ -122,7 +125,7 @@ def update_name(idt, name, twitch):
 
 
 def delete_streamer(idt):
-    """ Função que elimina streamer da DB com base no id"""
+    """Função que elimina streamer da DB com base no id"""
     delete = livecoders.delete().where(livecoders.c.id == int(idt))
     engine.execute(delete)
 
