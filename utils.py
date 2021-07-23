@@ -80,7 +80,7 @@ def get_image(name):
 
 
 def update_csv(streamers):
-    """ Função encarregue de guardar as modificações num .csv"""
+    """Função encarregue de guardar as modificações num .csv"""
     os.remove(FILE)
     streamers.to_csv(FILE, sep=",", index=False)
 
