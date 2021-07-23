@@ -1,7 +1,6 @@
 import os
 import sys
 import pandas as pd
-import time
 import requests
 import shutil
 from PIL import Image
@@ -23,7 +22,7 @@ def read_streamers():
         try:
             df = pd.read_csv(FILE, sep=",", encoding="latin-1")
             return df
-        except:
+        except FileNotFoundError:
             # Retornar um dataframe vazio, caso o ficheiro esteja vazio
             return pd.DataFrame({})
     else:
