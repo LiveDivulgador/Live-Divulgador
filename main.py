@@ -91,9 +91,12 @@ def main():
 
             is_live, category = is_streamer_live(str(idt), header)
 
-            # Além de verificar se está em live, verifica se está
-            # a fazer live em uma categoria permitida
-            if is_live and category in categories:
+            # Verificar se:
+            # 1 - Está online
+            # 2 - Está numa categoria permitida
+            # 3 - Ainda não fora divulgado/passaram 3 horas
+            #     desde a última divulgação
+            if is_live and category in categories and db.streamer_timeout(idt):
 
                 title = get_stream_title(idt, header)
 

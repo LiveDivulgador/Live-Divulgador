@@ -7,7 +7,7 @@ import os
 DIR_IMAGE = os.path.abspath(os.path.dirname("."))
 DIR_IMAGE = os.path.join(DIR_IMAGE, "img")
 
-# Unicode para o círculo vermelho
+# Unicode emojis
 EMOJIS = {"red_dot": u"\U0001F534", "arrow": u"\U000027A1"}
 
 
@@ -80,19 +80,23 @@ Entra aí: https://www.{twitch}
         # e se conseguiu descarregar a imagem
         name_img, is_image = get_image(twitch.split("/")[-1])
 
-    # Se conseguiu descarregar a imagem e se os streamer permitiu o print
-    if is_image and isPrint:
-        # Enviar tweet com media
-        api.update_with_media(name_img + ".png", status=tweet)
+        # Se estivermos em produção
+        if os.getenv("Env") == "Prod":
+            # Se conseguiu descarregar a imagem
+            # Se o streamer permitiu o print
+            if is_image and isPrint:
 
-        # Elminar Imagens
-        os.remove(name_img + ".png")
-        os.remove(name_img + ".jpg")
+                # Enviar tweet com media
+                api.update_with_media(name_img + ".png", status=tweet)
 
-    elif is_streamer_image and isPrint:
-        api.update_with_media(name_img, status=tweet)
+                # Elminar Imagens
+                os.remove(name_img + ".png")
+                os.remove(name_img + ".jpg")
 
-    else:
-        api.update_status(tweet)
+            elif is_streamer_image and isPrint:
+                api.update_with_media(name_img, status=tweet)
+
+            else:
+                api.update_status(tweet)
 
     return
