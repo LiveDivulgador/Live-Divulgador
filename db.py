@@ -165,14 +165,11 @@ def streamer_timeout(idt):
     for r in result:
 
         diff = (now - r[0]).seconds
-        print(r[0], " --- ", diff)
 
         # Se já tiver passado o tempo
         # ou se o streamer ainda não levou timeout
 
         if diff >= timeout or r[1] == False:
-
-            print("Vai ser divulgado e levar timeout agora")
 
             # Atualizar Timer
             upd = (
@@ -188,5 +185,4 @@ def streamer_timeout(idt):
 
             return True
 
-    print("Ainda não saiu do timeout, logo não será divulgado")
     return False

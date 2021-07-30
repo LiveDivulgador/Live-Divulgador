@@ -94,21 +94,21 @@ def main():
             # Verificar se:
             # 1 - Está online
             # 2 - Está numa categoria permitida
-            # 3 - Ainda não fora divulgado/passaram 3 horas
-            #     desde a última divulgação
-            if is_live and category in categories and db.streamer_timeout(idt):
-
-                title = get_stream_title(idt, header)
-
-                # Remover comandos do título
-                title = remove_cmds_from_title(title)
+            if is_live and category in categories:
 
                 # Verificar se ele já estava live antes
+                # e se não tem timeout de 3 horas
                 # se sim não fazemos outra vez o tweet
                 # se não fazemos o tweet
                 is_live = streamer[4]
 
-                if not is_live:
+                if not is_live and db.streamer_timeout(idt):
+
+                    title = get_stream_title(idt, header)
+
+                    # Remover comandos do título
+                    title = remove_cmds_from_title(title)
+
                     twitch = streamer[2]
                     twitter = streamer[3]
                     is_print = streamer[5]
@@ -126,7 +126,6 @@ def main():
                         category,
                         hashtags,
                     )
-
             else:
                 db.insert_on_stream(idt, False)
 
