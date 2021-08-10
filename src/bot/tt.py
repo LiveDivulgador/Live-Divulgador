@@ -1,11 +1,11 @@
 from tweepy import OAuthHandler, API
-from utils import get_image
-from twitch import get_1_streamer_id
 import sys
 import os
+from utils import get_image, ROOT_DIR
+from twitch import get_1_streamer_id
 
-DIR = os.path.abspath(os.path.dirname("../../"))
-DIR_IMAGE = os.path.join(DIR, "img")
+# Diretório referente às imagens personalizadas
+DIR_IMAGE = os.path.join(ROOT_DIR, "img")
 
 # Unicode emojis
 EMOJIS = {"red_dot": u"\U0001F534", "arrow": u"\U000027A1"}
@@ -80,7 +80,7 @@ Entra aí: https://www.{twitch}
 
         # Nome do ficheiro de imagem criado
         # e se conseguiu descarregar a imagem
-        name_img, is_image = get_image(twitch.split("/")[-1], DIR)
+        name_img, is_image = get_image(twitch.split("/")[-1], ROOT_DIR)
 
         # Se estivermos em produção
         if os.getenv("Env") == "Prod":
@@ -88,7 +88,7 @@ Entra aí: https://www.{twitch}
             # Se o streamer permitiu o print
             if is_image and isPrint:
 
-                name_img = os.path.join(DIR, name_img)
+                name_img = os.path.join(ROOT_DIR, name_img)
 
                 # Enviar tweet com media
                 api.update_with_media(name_img + ".png", status=tweet)

@@ -5,6 +5,12 @@ import requests
 import shutil
 import logging
 from PIL import Image
+from pathlib import Path
+
+# Diretório raiz
+ROOT_DIR = str(Path(__file__).absolute().parent.parent.parent)
+
+print(ROOT_DIR)
 
 # Configuração para criar logs deste ficheiro
 log = logging.getLogger("utils-log")
@@ -13,11 +19,8 @@ fh = logging.FileHandler('utils.log')
 fh.setLevel(logging.DEBUG)
 log.addHandler(fh)
 
-# Caminho absoluto deste ficheiro
-DIR_PATH = os.path.abspath(os.path.dirname("../../"))
-
 # Caminho desta pasta + o ficheiro que eu quero acessar
-FILE = os.path.join(DIR_PATH, "streamers.csv")
+FILE = os.path.join(ROOT_DIR, "streamers.csv")
 
 
 def read_streamers():
