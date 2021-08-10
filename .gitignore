@@ -135,7 +135,10 @@ dmypy.json
 # Ignore folders from dev environment
 init_scripts/
 img/
+webapp/
 
 # Ignire files from dev environment
 streamers.csv
+dump.sql
+*_bak.py
 .vscode

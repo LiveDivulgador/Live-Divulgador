@@ -1,7 +1,14 @@
 import requests
 import os
 from db import delete_streamer
+import logging
 
+# Configuração para criar logs deste ficheiro
+log = logging.getLogger("twitch-log")
+log.setLevel(logging.DEBUG)
+fh = logging.FileHandler('twitch.log')
+fh.setLevel(logging.DEBUG)
+log.addHandler(fh)
 
 client_id = os.getenv("client_id")
 client_secret = os.getenv("client_secret")
@@ -16,7 +23,11 @@ if client_secret is None or client_secret == '':
 
 def get_OAuth():
 
-    # Obter Oauth Token
+    """
+    Obter credenciais de login para usar
+    na API da Twitch
+    """
+
     url = "https://id.twitch.tv/oauth2/token"
     param = {
         "client_id": client_id,
@@ -25,6 +36,9 @@ def get_OAuth():
     }
 
     r = requests.post(url, data=param)
+
+    log.debug("[!] Func: get_OAuth - Status: %s" % r.status_code)
+
     if r.status_code == 400:
         raise ConnectionError(r.json())
 
@@ -38,24 +52,47 @@ def get_OAuth():
 
 
 def get_1_streamer_id(name):
-    # Obter o ID de um streamer
+
+    """
+    Obter o id da pessoa através do seu
+    nome na Twitch
+    """
+
     _, header = get_OAuth()
 
     url = "https://api.twitch.tv/helix/users"
     param = {"login": name}
 
-    r = requests.get(url, params=param, headers=header).json()
+    r = requests.get(url, params=param, headers=header)
+    log.debug(
+        "[!] Func: get_1_streamer_id - Status: %s - Streamer: %s"
+        % (r.status_code, name)
+    )
+
+    r = r.json()
 
     return str(r["data"][0]["id"])
 
 
 def get_streamer_id(streamers, header):
-    # Obter o id de cada streamer
+
+    """
+    Obter o id de todas as pessoas na
+    base de dados, através do seu nome
+    na Twitch
+    """
+
     for streamer in streamers["Nome"]:
         url = "https://api.twitch.tv/helix/users"
         param = {"login": streamer}
 
-        r = requests.get(url, params=param, headers=header).json()
+        r = requests.get(url, params=param, headers=header)
+        log.debug(
+            "[!] Func: get_streamer_id - Status: %s - Streamer: %s"
+            % (r.status_code, streamer)
+        )
+
+        r = r.json()
 
         # Encontrar o índice cujo nome == streamer
         index = streamers[streamers["Nome"] == streamer].index
@@ -65,11 +102,21 @@ def get_streamer_id(streamers, header):
 
 
 def is_streamer_live(streamer_id, header):
-    # Verificar se o streamer está em live
+
+    """
+    Verifica se a pessoa está em live
+    """
+
     url = "https://api.twitch.tv/helix/streams"
     param = {"user_id": streamer_id}
 
-    r = requests.get(url, params=param, headers=header).json()
+    r = requests.get(url, params=param, headers=header)
+    log.debug(
+        "[!] Func: is_streamer_live - Status: %s - Streamer: %s"
+        % (r.status_code, streamer_id)
+    )
+
+    r = r.json()
 
     # Se sim retorna True e a categoria
     if r["data"]:
@@ -80,16 +127,31 @@ def is_streamer_live(streamer_id, header):
 
 
 def get_stream_title(streamer_id, header):
+
+    """
+    Retorna o título da live
+    """
+
     url = "https://api.twitch.tv/helix/channels"
     param = {"broadcaster_id": streamer_id}
 
-    r = requests.get(url, params=param, headers=header).json()
+    r = requests.get(url, params=param, headers=header)
+    log.debug(
+        "[!] Func: get_stream_title - Status: %s - Streamer: %s"
+        % (r.status_code, streamer_id)
+    )
+
+    r = r.json()
 
     return r["data"][0]["title"]
 
 
 def name_changed(streamers, header):
-    """Função que verifica se o nome na base de dados está correto
+    """
+    NOTA: Precisa ser alterada para funcionar apenas com os dados
+          da BD
+
+    Função que verifica se o nome na base de dados está correto
     ou se precisa alterar
     """
 
@@ -105,7 +167,12 @@ def name_changed(streamers, header):
         # Obter nome do streamer utilizando o ID
         url = "https://api.twitch.tv/helix/channels"
         param = {"broadcaster_id": str(idt)}
-        r = requests.get(url, params=param, headers=header).json()
+
+        try:
+            r = requests.get(url, params=param, headers=header).json()
+        except:
+            with open("log.txt", "a+") as f:
+                f.write(f"#### Streamer: {idt} - Func: {get_stream_title}\n")
 
         # Obter nome real e o nome da DB do streamer
         streamer_name = str(r["data"][0]["broadcaster_name"]).lower()

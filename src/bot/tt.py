@@ -4,15 +4,17 @@ from twitch import get_1_streamer_id
 import sys
 import os
 
-DIR_IMAGE = os.path.abspath(os.path.dirname("."))
-DIR_IMAGE = os.path.join(DIR_IMAGE, "img")
+DIR = os.path.abspath(os.path.dirname("../../"))
+DIR_IMAGE = os.path.join(DIR, "img")
 
 # Unicode emojis
 EMOJIS = {"red_dot": u"\U0001F534", "arrow": u"\U000027A1"}
 
 
 def twitter_OAuth(streamer_type):
-    """Função que faz OAuth na conta correta"""
+    """
+        Função que faz OAuth na conta correta
+    """
 
     CONSUMER_KEY = os.environ["CONSUMER_KEY_C"]
     CONSUMER_SECRET = os.environ["CONSUMER_SECRET_C"]
@@ -78,13 +80,15 @@ Entra aí: https://www.{twitch}
 
         # Nome do ficheiro de imagem criado
         # e se conseguiu descarregar a imagem
-        name_img, is_image = get_image(twitch.split("/")[-1])
+        name_img, is_image = get_image(twitch.split("/")[-1], DIR)
 
         # Se estivermos em produção
         if os.getenv("Env") == "Prod":
             # Se conseguiu descarregar a imagem
             # Se o streamer permitiu o print
             if is_image and isPrint:
+
+                name_img = os.path.join(DIR, name_img)
 
                 # Enviar tweet com media
                 api.update_with_media(name_img + ".png", status=tweet)

@@ -1,13 +1,10 @@
 import os
 import datetime
 from urllib.parse import quote_plus
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import create_engine, inspect, MetaData
 from sqlalchemy_utils import database_exists, create_database
 from psycopg2 import OperationalError as PostgreSqlError
 from sqlalchemy.exc import OperationalError as SqlAlchemyError
-from dotenv import load_dotenv
-
-load_dotenv()
 
 user_db = os.getenv('user_db')
 passwd_db = os.getenv('passwd_db')
@@ -72,21 +69,32 @@ except SqlAlchemyError as e:
 
 
 def return_streamer_info():
-    # Retonar as os valores das colunas de todos os streamers
+    """
+    Retonar as os valores das colunas de todos os streamers
+    """
+
     result = engine.execute("SELECT * FROM livecoders")
 
     return result
 
 
 def return_streamer_names():
-    # Retorna o nome dos streamers
+    """
+    Retorna o nome dos streamers
+    """
+
     result = engine.execute("SELECT Nome FROM livecoders")
 
     return result
 
 
 def insert_streamers(streamers):
-    # Insere novos streamers na DB
+    """
+    NOTA: Para eliminar no futuro
+
+    Insere novos streamers na DB
+    """
+
     for index, row in streamers.iterrows():
 
         ins = livecoders.insert().values(
@@ -106,7 +114,10 @@ def insert_streamers(streamers):
 
 
 def insert_on_stream(idt, value):
-    # Atribui true ou false à coluna OnStream
+    """
+    Atribui true ou false à coluna OnStream
+    """
+
     upd = (
         livecoders.update()
         .values(onstream=value)
@@ -118,9 +129,10 @@ def insert_on_stream(idt, value):
 
 
 def update_name(idt, name, twitch):
-    """Função que atualizar o nome e o link com base no id"""
+    """
+    Função que atualizar o nome e o link com base no id
+    """
 
-    # Atualizar nome
     upd = (
         livecoders.update()
         .values(nome=name, twitch=twitch)
@@ -132,7 +144,10 @@ def update_name(idt, name, twitch):
 
 
 def delete_streamer(idt):
-    """Função que elimina streamer da DB com base no id"""
+    """
+    Função que elimina streamer da DB com base no id
+    """
+
     delete = livecoders.delete().where(livecoders.c.id == int(idt))
     engine.execute(delete)
 
@@ -140,7 +155,10 @@ def delete_streamer(idt):
 
 
 def set_timedout(idt, bool):
-    """Atualizar booleano Timeadout"""
+    """
+    Atualizar booleano Timeadout
+    """
+
     upd = (
         livecoders.update()
         .values(timedout=bool)
@@ -152,8 +170,10 @@ def set_timedout(idt, bool):
 
 
 def streamer_timeout(idt):
-    """Retorna True se tiver passado as 3 horas
-    Retorna False caso contrário"""
+    """
+    Retorna True se tiver passado as 3 horas
+    Retorna False caso contrário
+    """
 
     result = engine.execute(
         "SELECT Timer, Timedout FROM livecoders where Id={}".format(int(idt))

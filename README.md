@@ -11,21 +11,6 @@ Neste repositório temos vários ficheiros e é importante entendermos o propós
 
 -  **img**: Esta pasta serve para colocar as imagens personalizadas de cada streamer. Cada imagem deve estar no formato `.png` e o nome deve ser o ID do streamer.
 
-- **ex_streamers.csv**: Este ficheiro deve ser renomeado para `streamers.csv`. Nele devem ser preenchidas todas as colunas ***exceto*** a coluna `Id`. Apesar de o nome das mesmas ser bastante sugestivo irei explicar:
-	- **Nome**: Nome do streamer
-	
-	- **Twitch**: URL da Twitch do streamer no seguinte formato: `twitch.tv/nome_do_streamer`
-	
-	- **Twitter**: Nome de utilizador (A.K.A @) do Twitter do streamer (caso não tenha, deixar em branco)
-	
-	- **OnStream**: Booleano (TRUE, FALSE) que indica se o streamer está em live ou não (por padrão deixar FALSE)
-	
-	- **Print**: Booleano (TRUE, FALSE) que confirma se o streamer aceitou ou não o print do bot
-	
-	- **Tipo**: Categoria das streams: `code` ou `art` (art abrange não só arte, mas também artesanato e criadores)
-
-	- **Hashtags**: Hashtags que serão mostradas no tweet
-
 - **main.py**: Ficheiro de código com a lógica principal do bot
 
 - **tt.py**: Ficheiro de código com as funções referentes a funcionalidades do Twitter (como tweetar por exemplo)
@@ -52,8 +37,18 @@ Banco de dados PostgreSQL
 - Criar um banco com o nome `streamers`
 - Insira as credenciais no arquivo `.env` nas variáveis `user_db` e `passwd_db`
 
-Ao executar a aplicação será criado as tabelas necessárias para a aplicação.
+Será, automaticamente, criada a tabela com as devidas colunas, porém será necessário adicionar manualmente, através do `psql`, os dados das pessoas a serem divulgadas.
 
+**Nota**: Isso pode ser trabalhoso de fazer, já que é preciso saber o ID da Twitch de cada streamer. No entanto, já está planeado fazer-se uma interface para o utilizador fazer tudo isso graficamente e de forma simples.
+
+### Importar e Exportar o banco
+Se você já populacionou o seu banco, pode criar um ficheiro `.sql` com todos os dados. Para isso use o seguinte comando no seu terminal:
+
+`pg_dump --host localhost --port 5432 --username <user_db> --format plain --verbose --file "seu_ficheiro.sql" --table public.livecoders streamers`
+
+Posteriormente, pode exportar novamente, bastanto ter já criada a base de dados `streamers`:
+
+sudo -u postgres psql streamers < seu_ficheiro.sql
 
 # Colaboração
 Se gostou do projeto e tem interesse em ajudar, pode sempre seguir as contas do bot no Twitter: [@LiveDivulgador](https://twitter.com/LiveDivulgador) e [@LiveDivulgador2](https://twitter.com/LiveDivulgador2)
