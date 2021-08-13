@@ -1,10 +1,6 @@
 name: Continuous Integration Tests
 
-on:
-  pull_request:
-    branches:
-      - main
-  push:
+on: [push]
 
 jobs:
   execute_black_linter_check:
