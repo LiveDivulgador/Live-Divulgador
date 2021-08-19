@@ -47,7 +47,8 @@ def main():
             # e se não tem timeout de 3 horas
             is_live = streamer[4]
 
-            if not is_live and db.streamer_timeout(idt):
+            #if not is_live and db.streamer_timeout(idt):
+            if not is_live:
 
                 title = get_stream_title(idt, header)
 
