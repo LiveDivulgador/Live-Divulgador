@@ -1,11 +1,13 @@
-import os
 import datetime
+import os
 from urllib.parse import quote_plus
-from sqlalchemy import create_engine, inspect, MetaData
-from sqlalchemy_utils import database_exists, create_database
-from psycopg2 import OperationalError as PostgreSqlError
-from sqlalchemy.exc import OperationalError as SqlAlchemyError
 
+from psycopg2 import OperationalError as PostgreSqlError
+from sqlalchemy import MetaData, create_engine, inspect
+from sqlalchemy.exc import OperationalError as SqlAlchemyError
+from sqlalchemy_utils import create_database, database_exists
+
+# Credenciais da Base de Dados
 user_db = os.getenv('user_db')
 passwd_db = os.getenv('passwd_db')
 
@@ -15,7 +17,7 @@ port_db = os.getenv('port_db')
 
 # Tempo, em segundos, de espera até poder
 # ser divulgado novamente
-timeout = 10800
+timeout = 900
 
 if user_db is None or user_db == '':
     raise ValueError('user_db não encontrado')
@@ -176,7 +178,9 @@ def streamer_timeout(idt):
     """
 
     result = engine.execute(
-        "SELECT Timer, Timedout FROM livecoders where Id={}".format(int(idt))
+        "SELECT Timer, Timedout, OnStream FROM livecoders where Id={}".format(
+            int(idt)
+        )
     )
 
     now = datetime.datetime.now()
@@ -187,9 +191,10 @@ def streamer_timeout(idt):
         diff = (now - r[0]).seconds
 
         # Se já tiver passado o tempo
-        # ou se o streamer ainda não levou timeout
+        # ou se o streamer ainda não levou timeout e
+        # não está em live
 
-        if diff >= timeout or r[1] == False:
+        if diff >= timeout or not (r[1] and r[2]):
 
             # Atualizar Timer
             upd = (

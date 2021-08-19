@@ -1,8 +1,9 @@
-from tweepy import OAuthHandler, API
-import sys
 import os
-from utils import get_image, ROOT_DIR
+import sys
+
+from tweepy import API, OAuthHandler
 from twitch import get_1_streamer_id
+from utils import ROOT_DIR, get_image
 
 # Diretório referente às imagens personalizadas
 DIR_IMAGE = os.path.join(ROOT_DIR, "img")
@@ -13,7 +14,7 @@ EMOJIS = {"red_dot": u"\U0001F534", "arrow": u"\U000027A1"}
 
 def twitter_OAuth(streamer_type):
     """
-        Função que faz OAuth na conta correta
+    Função que faz OAuth na conta correta
     """
 
     CONSUMER_KEY = os.environ["CONSUMER_KEY_C"]

@@ -1,61 +1,14 @@
-import os
-import sys
-import pandas as pd
-import requests
-import shutil
 import logging
-from PIL import Image
+import os
+import shutil
+import sys
 from pathlib import Path
+
+import requests
+from PIL import Image
 
 # Diretório raiz
 ROOT_DIR = str(Path(__file__).absolute().parent.parent.parent)
-
-print(ROOT_DIR)
-
-# Configuração para criar logs deste ficheiro
-log = logging.getLogger("utils-log")
-log.setLevel(logging.DEBUG)
-fh = logging.FileHandler('utils.log')
-fh.setLevel(logging.DEBUG)
-log.addHandler(fh)
-
-# Caminho desta pasta + o ficheiro que eu quero acessar
-FILE = os.path.join(ROOT_DIR, "streamers.csv")
-
-
-def read_streamers():
-    """
-    NOTA: Precisa ser removida no futuro
-
-    Ler os nomes dos streamers de um .csv
-    """
-
-    if os.path.exists(FILE):
-
-        try:
-            df = pd.read_csv(FILE, sep=",", encoding="latin-1")
-            return df
-        except FileNotFoundError:
-            # Retornar um dataframe vazio, caso o ficheiro esteja vazio
-            return pd.DataFrame({})
-    else:
-        print("O ficheiro " + FILE + " não existe!")
-        sys.exit(1)
-
-
-def delete_exist_streamers(streamers, names):
-
-    """
-    NOTA: Precisa ser removida no futuro
-
-    Eliminar Streamers que já estão na BD
-    """
-
-    for name in names:
-        i = streamers[streamers["Nome"] == name].index
-        streamers = streamers.drop(i)
-
-    return streamers
 
 
 def remove_cmds_from_title(title):
@@ -84,10 +37,6 @@ def get_image(name, dir):
     img_name = os.path.join(dir, img_name)
 
     r = requests.get(url, stream=True)
-    log.debug(
-        "[!] Func: get_image - Status: %s - Streamer: %s"
-        % (r.status_code, name)
-    )
 
     if r.status_code == 200:
 
@@ -106,17 +55,3 @@ def get_image(name, dir):
         return name, True
 
     return None, False
-
-
-def update_csv(streamers):
-
-    """
-    NOTA: Esta função será eliminada no futuro
-
-    Função encarregue de guardar as modificações num .csv
-    """
-
-    os.remove(FILE)
-    streamers.to_csv(FILE, sep=",", index=False)
-
-    return

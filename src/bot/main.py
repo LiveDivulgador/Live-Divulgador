@@ -1,8 +1,9 @@
 # Pacotes de terceiros
-import time
-import schedule
-import threading
 import os
+import threading
+import time
+
+import schedule
 from dotenv import load_dotenv
 
 # Preparar o env
@@ -10,14 +11,8 @@ load_dotenv()
 
 # Ficheiros do bot
 import db
-from twitch import (
-    get_OAuth,
-    is_streamer_live,
-    name_changed,
-    get_stream_title,
-    get_streamer_id,
-)
 from tt import *
+from twitch import get_OAuth, get_stream_title, is_streamer_live
 from utils import *
 
 
@@ -50,8 +45,6 @@ def main():
 
             # Verificar se ele já estava live antes
             # e se não tem timeout de 3 horas
-            # se sim não fazemos outra vez o tweet
-            # se não fazemos o tweet
             is_live = streamer[4]
 
             if not is_live and db.streamer_timeout(idt):
@@ -69,6 +62,7 @@ def main():
 
                 # Vamos fazer o tweet
                 db.insert_on_stream(idt, True)
+
                 tweet(
                     twitch,
                     twitter,
@@ -78,8 +72,6 @@ def main():
                     category,
                     hashtags,
                 )
-            else:
-                db.insert_on_stream(idt, False)
         else:
             db.insert_on_stream(idt, False)
 

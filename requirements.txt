@@ -1,6 +1,5 @@
 tweepy
 requests
-pandas
 SQLAlchemy
 SQLAlchemy-Utils
 psycopg2
@@ -8,3 +7,4 @@ schedule
 Pillow
 python-dotenv
 black
+isort
