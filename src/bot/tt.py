@@ -1,3 +1,4 @@
+import datetime
 import os
 import sys
 
@@ -41,6 +42,42 @@ def twitter_OAuth(streamer_type):
         sys.exit(1)
 
     return api
+
+
+def tweeted(twitter_username):
+    """
+    Verifica se a pessoa fora divulgada nos
+    últimos 15 minutos
+    """
+
+    minutes_threshold = 15
+    num_last_tweets = 100
+    now = datetime.datetime.now()
+
+    # Obter o objecto API
+    api = twitter_OAuth(streamer_type)
+
+    # Obter os últimos 100 tweets
+    tweets = Cursor(api.user_timeline, id="LiveDivulgador").items(
+        num_last_tweets
+    )
+
+    for tweet in tweets:
+
+        # Primeira linha do tweet (onde se encontra o @)
+        tweet_first_line = tweet.text.split('\n')[0]
+
+        if twitter_username in tweet_first_line:
+
+            # Minutos passados após o tweet
+            minutes_elapsed = (now - tweet.created_at).total_seconds() // 60
+
+            # Caso já tenha sido tweetado há menos de 15 minutos
+            # retornamos True
+            if minutes_elapsed <= minutes_threshold:
+                return True
+
+    return False
 
 
 def tweet(twitch, twitter, title, isPrint, streamer_type, category, hashtags):
@@ -103,5 +140,9 @@ Entra aí: https://www.{twitch}
 
             else:
                 api.update_status(tweet)
+
+        # Caso estejamos no ambiente Dev, printamos o tweet
+        else:
+            print(tweet)
 
     return

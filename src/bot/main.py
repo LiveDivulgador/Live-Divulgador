@@ -15,16 +15,17 @@ from tt import *
 from twitch import get_OAuth, get_stream_title, is_streamer_live
 from utils import *
 
+# Lista das categorias permitidas
+categories = [
+    "Art",
+    "Science & Technology",
+    "Software and Game Development",
+    "Makers & Crafting",
+    "Talk Shows & Podcasts",
+]
+
 
 def main():
-
-    # Lista das categorias permitidas
-    categories = [
-        "Art",
-        "Science & Technology",
-        "Makers & Crafting",
-        "Talk Shows & Podcasts",
-    ]
 
     # Definir tokens e header
     access_token, header = get_OAuth()
@@ -47,7 +48,7 @@ def main():
             # e se não tem timeout de 3 horas
             is_live = streamer[4]
 
-            #if not is_live and db.streamer_timeout(idt):
+            # if not is_live and db.streamer_timeout(idt):
             if not is_live:
 
                 title = get_stream_title(idt, header)
