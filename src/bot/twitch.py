@@ -1,7 +1,8 @@
 import os
 
 import requests
-from db import delete_streamer
+
+from .db import delete_streamer
 
 # Credenciais da API Twitch
 client_id = os.getenv("client_id")
