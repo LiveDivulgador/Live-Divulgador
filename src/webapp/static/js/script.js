@@ -12,10 +12,23 @@ let orderapp = new Vue({
             category: "",
             hashtags: "",
             is_valid: false,
-            command: "INSERT INTO livecoders (Nome,Id,Twitch,Twitter,OnStream,Print,Tipo,Hashtags) VALUES "
+            command: ""
         }
     },
+    mounted: function(){
+        this.cleanup();
+    },
     methods:{
+        cleanup(){
+            this.twitch_name = "";
+            this.twitch_id = "";
+            this.twitter = "";
+            this.allow_print = "";
+            this.category = "";
+            this.hashtags = "";
+            this.command = "INSERT INTO livecoders (Nome,Id,Twitch,Twitter,OnStream,Print,Tipo,Hashtags) VALUES ";
+        },
+
         get_twitch_id(){
             fetch("/get_streamer_id/?twitch_name="+ this.twitch_name, {
                 method: "GET"
@@ -46,11 +59,16 @@ let orderapp = new Vue({
         },
 
         validate(){
-            this.is_valid = true;
+            this.is_valid = ~this.is_valid;
 
-            this.command += `('${this.twitch_name}',${this.twitch_id},'twitch.tv/${this.twitch_name}',\
-                              '${this.twitter}',FALSE,${this.allow_print},'${this.category}',\
-                              '${this.hashtags}');`
+            if(this.is_valid){
+                this.command += `('${this.twitch_name}',${this.twitch_id},'twitch.tv/${this.twitch_name}',\
+                                '${this.twitter}',FALSE,${this.allow_print},'${this.category}',\
+                                '${this.hashtags}');`
+            }
+            else{
+                this.cleanup();
+            }
         }
     }
 });
