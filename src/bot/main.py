@@ -33,24 +33,27 @@ def main():
     # Retornar dados dos streamers
     results = db.return_streamer_info().fetchall()
 
-    # Verificar se o streamer está em live ou não
+    # Iterar streamers
     for streamer in results:
+
+        # ID Twitch
         idt = streamer[1]
 
-        is_live, category = is_streamer_live(str(idt), header)
+        # Verificar se está em live e retornar categoria a streamar
+        is_live, category = is_streamer_live(idt, header)
 
         # Verificar se:
         # 1 - Está online
         # 2 - Está numa categoria permitida
         if is_live and category in categories:
 
-            # Verificar se ele já estava live antes
-            # e se não tem timeout de 3 horas
+            # Verificar se ele já estava live antes (na base de dados)
             is_live = streamer[4]
 
             # if not is_live and db.streamer_timeout(idt):
             if not is_live:
 
+                # Titulo da live
                 title = get_stream_title(idt, header)
 
                 # Remover comandos do título
@@ -62,9 +65,10 @@ def main():
                 streamer_type = streamer[6]
                 hashtags = streamer[7]
 
-                # Vamos fazer o tweet
+                # Como está em live, vamos deixar verdadeiro na base de dados
                 db.insert_on_stream(idt, True)
 
+                # Vamos fazer o tweet
                 tweet(
                     twitch,
                     twitter,
@@ -75,6 +79,7 @@ def main():
                     hashtags,
                 )
         else:
+            # Caso não esteja em live, definir como falso
             db.insert_on_stream(idt, False)
 
 

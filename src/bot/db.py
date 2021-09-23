@@ -123,7 +123,7 @@ def insert_on_stream(idt, value):
     upd = (
         livecoders.update()
         .values(onstream=value)
-        .where(livecoders.c.id == idt)
+        .where(livecoders.c.id == int(idt))
     )
     engine.execute(upd)
 
@@ -138,7 +138,7 @@ def update_name(idt, name, twitch):
     upd = (
         livecoders.update()
         .values(nome=name, twitch=twitch)
-        .where(livecoders.c.id == idt)
+        .where(livecoders.c.id == int(idt))
     )
     engine.execute(upd)
 
@@ -169,45 +169,3 @@ def set_timedout(idt, bool):
     engine.execute(upd)
 
     return
-
-
-def streamer_timeout(idt):
-    """
-    Retorna True se tiver passado as 3 horas
-    Retorna False caso contrário
-    """
-
-    result = engine.execute(
-        "SELECT Timer, Timedout, OnStream FROM livecoders where Id={}".format(
-            int(idt)
-        )
-    )
-
-    now = datetime.datetime.now()
-
-    # Iterar o cursor de resultados
-    for r in result:
-
-        diff = (now - r[0]).seconds
-
-        # Se já tiver passado o tempo
-        # ou se o streamer ainda não levou timeout e
-        # não está em live
-
-        if diff >= timeout or not (r[1] and r[2]):
-
-            # Atualizar Timer
-            upd = (
-                livecoders.update()
-                .values(timer=now)
-                .where(livecoders.c.id == int(idt))
-            )
-
-            engine.execute(upd)
-
-            # Leva timeout
-            set_timedout(idt, True)
-
-            return True
-
-    return False
