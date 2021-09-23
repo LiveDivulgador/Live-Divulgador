@@ -9,11 +9,11 @@ from dotenv import load_dotenv
 # Preparar o env
 load_dotenv()
 
-# Ficheiros do bot
-import db
-from tt import *
-from twitch import get_OAuth, get_stream_title, is_streamer_live
-from utils import *
+from db import insert_on_stream, return_streamer_info
+from tt import tweet
+from twitch import (get_OAuth, get_stream_title, get_streamer_name,
+                    is_streamer_live)
+from utils import remove_cmds_from_title
 
 # Lista das categorias permitidas
 categories = [
@@ -31,7 +31,7 @@ def main():
     access_token, header = get_OAuth()
 
     # Retornar dados dos streamers
-    results = db.return_streamer_info().fetchall()
+    results = return_streamer_info().fetchall()
 
     # Iterar streamers
     for streamer in results:
@@ -59,14 +59,17 @@ def main():
                 # Remover comandos do título
                 title = remove_cmds_from_title(title)
 
-                twitch = streamer[2]
+                # Obter o URL atualiazado do canal
+                twitch, _ = get_streamer_name(idt, header)
+
+                # Informações do streamer vindas da base de dados
                 twitter = streamer[3]
                 is_print = streamer[5]
                 streamer_type = streamer[6]
                 hashtags = streamer[7]
 
                 # Como está em live, vamos deixar verdadeiro na base de dados
-                db.insert_on_stream(idt, True)
+                insert_on_stream(idt, True)
 
                 # Vamos fazer o tweet
                 tweet(
@@ -80,7 +83,7 @@ def main():
                 )
         else:
             # Caso não esteja em live, definir como falso
-            db.insert_on_stream(idt, False)
+            insert_on_stream(idt, False)
 
 
 def threaded_job(job):

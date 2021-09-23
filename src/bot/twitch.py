@@ -35,6 +35,13 @@ def make_request(url, params, method="get", header=None):
     return r.json(), r.status_code
 
 
+def create_twitch_url(streamer_name):
+    """
+    Retorna o URL do canal e o nome do mesmo
+    """
+    return "twitch.tv/" + streamer_name, streamer_name
+
+
 def get_OAuth():
 
     """
@@ -107,7 +114,7 @@ def get_streamer_name(streamer_id, header):
 
     data, _ = make_request(url, params, header=header)
 
-    return data["data"][0]["broadcaster_login"]
+    return create_twitch_url(data["data"][0]["broadcaster_login"])
 
 
 def is_streamer_live(streamer_id, header):
