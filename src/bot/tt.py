@@ -48,6 +48,8 @@ def tweeted(twitter_username):
     """
     Verifica se a pessoa fora divulgada nos
     últimos 15 minutos
+
+    [!} FUNÇÃO EM TESTE
     """
 
     minutes_threshold = 15
@@ -80,7 +82,7 @@ def tweeted(twitter_username):
     return False
 
 
-def tweet(twitch, twitter, title, isPrint, streamer_type, category, hashtags):
+def tweet(idt, name, twitch, twitter, title, isPrint, streamer_type, category, hashtags):
 
     # Definir tipo de streamer com base na categoria
     # da stream atual
@@ -109,8 +111,7 @@ Entra aí: https://www.{twitch}
 {hashtags}"""
 
     # Verificar se streamer tem imagem propria
-    streamer_id = get_1_streamer_id(twitch.split("/")[-1])
-    name_img = os.path.join(DIR_IMAGE, streamer_id + ".png")
+    name_img = os.path.join(DIR_IMAGE, str(idt) + ".png")
     is_streamer_image = os.path.exists(name_img)
     is_image = False
 
@@ -118,7 +119,7 @@ Entra aí: https://www.{twitch}
 
         # Nome do ficheiro de imagem criado
         # e se conseguiu descarregar a imagem
-        name_img, is_image = get_image(twitch.split("/")[-1], ROOT_DIR)
+        name_img, is_image = get_image(name, ROOT_DIR)
 
         # Se estivermos em produção
         if os.getenv("Env") == "Prod":

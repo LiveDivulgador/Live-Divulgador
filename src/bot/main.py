@@ -60,7 +60,7 @@ def main():
                 title = remove_cmds_from_title(title)
 
                 # Obter o URL atualiazado do canal
-                twitch, _ = get_streamer_name(idt, header)
+                twitch, name = get_streamer_name(idt, header)
 
                 # Informações do streamer vindas da base de dados
                 twitter = streamer[3]
@@ -73,6 +73,8 @@ def main():
 
                 # Vamos fazer o tweet
                 tweet(
+                    idt,
+                    name,
                     twitch,
                     twitter,
                     title,
