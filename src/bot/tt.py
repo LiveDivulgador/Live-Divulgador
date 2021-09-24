@@ -82,7 +82,17 @@ def tweeted(twitter_username):
     return False
 
 
-def tweet(idt, name, twitch, twitter, title, isPrint, streamer_type, category, hashtags):
+def tweet(
+    idt,
+    name,
+    twitch,
+    twitter,
+    title,
+    isPrint,
+    streamer_type,
+    category,
+    hashtags,
+):
 
     # Definir tipo de streamer com base na categoria
     # da stream atual

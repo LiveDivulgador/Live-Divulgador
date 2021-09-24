@@ -19,11 +19,13 @@
 <body>
     
     <div id="liveapp" class="container py-5">
-        <div class="row text-center">
-            <div class="col">
-                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-plus"></i></div>
-                <h2 class="fw-bolder">Base de Dados</h2>
-                <p class="lead mb-0">Adicionar streamer(s) à base de dados.</p>
+        <div class="row text-center  d-flex justify-content-center">
+            <div @click="change_instruction('insert')" class="feature bg-primary bg-gradient text-white rounded-3 mb-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="INSERT">
+                <i class="bi bi-plus"></i>
+            </div>
+            &nbsp;
+            <div @click="change_instruction('update')" class="feature bg-primary bg-gradient text-white rounded-3 mb-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="UPDATE">
+                <i class="bi bi-pencil-square"></i>
             </div>
         </div>
 
@@ -47,14 +49,14 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="form-floating mb-3 ">
-                            <input v-model="twitter" type="text" class="form-control" id="twitter" placeholder="Arroba do Twitter" required>
+                            <input v-model="twitter" type="text" class="form-control" id="twitter" placeholder="Arroba do Twitter" :required="instruction=='insert' ? true : null">
                             <label for="twitter">Twitter</label>
                         </div>
                     </div>
 
                     <div class="col-lg-4">
                         <div class="form-floating mb-3">
-                            <select v-model="allow_print" class="form-select" id="floatingSelect" required>
+                            <select v-model="allow_print" class="form-select" id="floatingSelect" :required="instruction=='insert' ? true : null">
                                 <option selected disabled value="">Selecione uma opção</option>
                                 <option value="TRUE">Sim</option>
                                 <option value="FALSE">Não</option>
@@ -65,7 +67,7 @@
 
                     <div class="col-lg-4">
                         <div class="form-floating mb-3">
-                            <select v-model="category" class="form-select" id="floatingSelect" required>
+                            <select v-model="category" class="form-select" id="floatingSelect" :required="instruction=='insert' ? true : null">
                                 <option selected disabled value="">Selecione uma opção</option>
                                 <option value="code">Ciência e Tecnologia</option>
                                 <option value="art">Artes/Artesanato</option>
@@ -76,7 +78,7 @@
 
                     <div class="col-lg-4">
                         <div class="form-floating mb-3 ">
-                            <input v-model="hashtags" type="text" class="form-control" id="hashtags" placeholder="Hashtags" required>
+                            <input v-model="hashtags" type="text" class="form-control" id="hashtags" placeholder="Hashtags" :required="instruction=='insert' ? true : null">
                             <label for="twitter">Hashtags</label>
                         </div>
                     </div>

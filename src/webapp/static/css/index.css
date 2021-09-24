@@ -5,6 +5,11 @@
     height: 4rem;
     width: 4rem;
     font-size: 2rem;
+    cursor: pointer;
+}
+
+.feature:hover{
+    background-color: #5d93e3 !important;
 }
 
 /* CRÉDITOS PARA: https://codepen.io/antoineneff/pen/OMegNx */
