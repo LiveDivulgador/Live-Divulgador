@@ -27,7 +27,7 @@ if passwd_db is None or passwd_db == '':
     raise ValueError('passwd_db não encontrado')
 
 if host_db is None or host_db == '':
-    host_db = "localhost"
+    host_db = "db"
 
 if port_db is None or port_db == '':
     port_db = "5432"

@@ -1,5 +1,5 @@
 Flask
-tweepy
+tweepy==3.10
 requests
 SQLAlchemy
 SQLAlchemy-Utils
@@ -8,4 +8,3 @@ schedule
 Pillow
 python-dotenv
 black
-isort

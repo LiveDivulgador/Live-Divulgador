@@ -113,7 +113,7 @@ def tweet(
 
     tweet = f"""{EMOJIS["arrow"]} {twitter} está em Live neste momento!{EMOJIS["red_dot"]}
 
-	
+
 {title.replace("#", " - ")}
 
 Entra aí: https://www.{twitch}
