@@ -1,7 +1,5 @@
-import logging
-import os
+from os import path
 import shutil
-import sys
 from pathlib import Path
 
 import requests
@@ -31,10 +29,11 @@ def get_image(name, dir):
     Função que obtém a imagem para anexar ao tweet
     """
 
-    url = f"https://static-cdn.jtvnw.net/previews-ttv/live_user_{name}-1280x720.jpg"
+    url = f"https://static-cdn.jtvnw.net/previews-ttv/live_user_{name}\
+        -1280x720.jpg"
 
     img_name = name + ".jpg"
-    img_name = os.path.join(dir, img_name)
+    img_name = path.join(dir, img_name)
 
     r = requests.get(url, stream=True)
 
@@ -50,7 +49,7 @@ def get_image(name, dir):
         # Converter a imagem para .png
         img = Image.open(img_name)
 
-        img.save(os.path.join(dir, name + ".png"))
+        img.save(path.join(dir, name + ".png"))
 
         return name, True
 

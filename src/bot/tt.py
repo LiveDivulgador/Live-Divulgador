@@ -1,9 +1,7 @@
-import datetime
 import os
 import sys
 
 from tweepy import API, OAuthHandler
-from twitch import get_1_streamer_id
 from utils import ROOT_DIR, get_image
 
 # Diretório referente às imagens personalizadas
@@ -13,7 +11,7 @@ DIR_IMAGE = os.path.join(ROOT_DIR, "img")
 EMOJIS = {"red_dot": u"\U0001F534", "arrow": u"\U000027A1"}
 
 
-def twitter_OAuth(streamer_type):
+def twitter_oauth(streamer_type):
     """
     Função que faz OAuth na conta correta
     """
@@ -44,51 +42,13 @@ def twitter_OAuth(streamer_type):
     return api
 
 
-def tweeted(twitter_username):
-    """
-    Verifica se a pessoa fora divulgada nos
-    últimos 15 minutos
-
-    [!} FUNÇÃO EM TESTE
-    """
-
-    minutes_threshold = 15
-    num_last_tweets = 100
-    now = datetime.datetime.now()
-
-    # Obter o objecto API
-    api = twitter_OAuth(streamer_type)
-
-    # Obter os últimos 100 tweets
-    tweets = Cursor(api.user_timeline, id="LiveDivulgador").items(
-        num_last_tweets
-    )
-
-    for tweet in tweets:
-
-        # Primeira linha do tweet (onde se encontra o @)
-        tweet_first_line = tweet.text.split('\n')[0]
-
-        if twitter_username in tweet_first_line:
-
-            # Minutos passados após o tweet
-            minutes_elapsed = (now - tweet.created_at).total_seconds() // 60
-
-            # Caso já tenha sido tweetado há menos de 15 minutos
-            # retornamos True
-            if minutes_elapsed <= minutes_threshold:
-                return True
-
-    return False
-
-
 def tweet(
     idt,
     name,
     twitch,
     twitter,
     title,
-    isPrint,
+    is_print,
     streamer_type,
     category,
     hashtags,
@@ -103,7 +63,7 @@ def tweet(
         streamer_type = "art"
 
     # Obter o objecto API
-    api = twitter_OAuth(streamer_type)
+    api = twitter_oauth(streamer_type)
 
     # Se o streamer não tiver Twitter, usamos o nome da twitch
     if twitter == "NaN":
@@ -135,7 +95,7 @@ Entra aí: https://www.{twitch}
         if os.getenv("Env") == "Prod":
             # Se conseguiu descarregar a imagem
             # Se o streamer permitiu o print
-            if is_image and isPrint:
+            if is_image and is_print:
 
                 name_img = os.path.join(ROOT_DIR, name_img)
 
@@ -146,7 +106,7 @@ Entra aí: https://www.{twitch}
                 os.remove(name_img + ".png")
                 os.remove(name_img + ".jpg")
 
-            elif is_streamer_image and isPrint:
+            elif is_streamer_image and is_print:
                 api.update_with_media(name_img, status=tweet)
 
             else:
@@ -155,5 +115,3 @@ Entra aí: https://www.{twitch}
         # Caso estejamos no ambiente Dev, printamos o tweet
         else:
             print(tweet)
-
-    return

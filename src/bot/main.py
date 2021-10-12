@@ -1,23 +1,22 @@
 # Pacotes de terceiros
-import os
-import threading
-import time
-
-import schedule
-from dotenv import load_dotenv
-
-# Preparar o env
-load_dotenv()
-
-from db import insert_on_stream, return_streamer_info
-from tt import tweet
+from utils import remove_cmds_from_title
 from twitch import (
     get_OAuth,
     get_stream_title,
     get_streamer_name,
     is_streamer_live,
 )
-from utils import remove_cmds_from_title
+from tt import tweet
+from db import insert_on_stream, return_streamer_info
+from threading import Thread
+from time import sleep
+
+from schedule import run_pending, every
+from dotenv import load_dotenv
+
+# Preparar o env
+load_dotenv()
+
 
 # Lista das categorias permitidas
 categories = [
@@ -94,7 +93,7 @@ def main():
 
 def threaded_job(job):
     # Função para correr a main em modo threading
-    thread = threading.Thread(target=main)
+    thread = Thread(target=main)
     thread.start()
 
     # Esperar pela thread terminar
@@ -103,10 +102,10 @@ def threaded_job(job):
 
 if __name__ == "__main__":
 
-    schedule.every(60).seconds.do(threaded_job, main)
+    every(60).seconds.do(threaded_job, main)
 
     while True:
-        schedule.run_pending()
+        run_pending()
 
         # Performance measure
-        time.sleep(30)
+        sleep(30)

@@ -1,10 +1,10 @@
-import os
+from os import getenv
 
 import requests
 
 # Credenciais da API Twitch
-client_id = os.getenv("client_id")
-client_secret = os.getenv("client_secret")
+client_id = getenv("client_id")
+client_secret = getenv("client_secret")
 
 
 if client_id is None or client_id == '':
