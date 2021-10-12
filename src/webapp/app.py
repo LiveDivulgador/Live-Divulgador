@@ -1,7 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-from flask import Flask, json, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request
 
 from ..bot.twitch import get_1_streamer_id
 
@@ -19,10 +19,10 @@ def index():
 @app.route("/get_streamer_id/")
 def get_streamer_id():
     try:
-        id = get_1_streamer_id(request.args.get("twitch_name"))
+        streamer_id = get_1_streamer_id(request.args.get("twitch_name"))
 
         # retornar json com o id
-        return jsonify(id=id), 200
+        return jsonify(id=streamer_id), 200
 
     # Streamer não encontrado
     except IndexError:

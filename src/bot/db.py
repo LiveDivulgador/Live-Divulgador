@@ -1,19 +1,18 @@
-import datetime
-import os
+from os import getenv
 from urllib.parse import quote_plus
 
 from psycopg2 import OperationalError as PostgreSqlError
-from sqlalchemy import MetaData, create_engine, inspect
+from sqlalchemy import MetaData, create_engine
 from sqlalchemy.exc import OperationalError as SqlAlchemyError
 from sqlalchemy_utils import create_database, database_exists
 
 # Credenciais da Base de Dados
-user_db = os.getenv('user_db')
-passwd_db = os.getenv('passwd_db')
+user_db = getenv('user_db')
+passwd_db = getenv('passwd_db')
 
 # Variaveis opcionais
-host_db = os.getenv('host_db')
-port_db = os.getenv('port_db')
+host_db = getenv('host_db')
+port_db = getenv('port_db')
 
 # Tempo, em segundos, de espera até poder
 # ser divulgado novamente
@@ -48,8 +47,8 @@ try:
     # Cria tabela 'livecoders' caso não exista
     engine.execute(
         "CREATE TABLE IF NOT EXISTS livecoders (Nome varchar(50), Id integer,\
-        Twitch varchar(150), Twitter varchar(50), OnStream boolean, Print boolean,\
-        Tipo varchar(5), Hashtags varchar(300),\
+        Twitch varchar(150), Twitter varchar(50), OnStream boolean,\
+        Print boolean, Tipo varchar(5), Hashtags varchar(300),\
         Timer timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(0),\
         Timedout boolean NOT NULL DEFAULT FALSE)"
     )
@@ -112,8 +111,6 @@ def insert_streamers(streamers):
 
         engine.execute(ins)
 
-    return
-
 
 def insert_on_stream(idt, value):
     """
@@ -126,8 +123,6 @@ def insert_on_stream(idt, value):
         .where(livecoders.c.id == int(idt))
     )
     engine.execute(upd)
-
-    return
 
 
 def update_name(idt, name, twitch):
@@ -142,8 +137,6 @@ def update_name(idt, name, twitch):
     )
     engine.execute(upd)
 
-    return
-
 
 def delete_streamer(idt):
     """
@@ -152,8 +145,6 @@ def delete_streamer(idt):
 
     delete = livecoders.delete().where(livecoders.c.id == int(idt))
     engine.execute(delete)
-
-    return
 
 
 def set_timedout(idt, bool):
@@ -167,5 +158,3 @@ def set_timedout(idt, bool):
         .where(livecoders.c.id == int(idt))
     )
     engine.execute(upd)
-
-    return
