@@ -12,13 +12,17 @@ services:
       - .env
 
   db:
+    image: mariadb:latest
+    container_name: mariadb
     restart: always
     env_file:
       - .env
     environment:
-      POSTGRES_USER: ${user_db}
-      POSTGRES_PASSWORD: ${passwd_db}
-      POSTGRES_DB: streamers
-    build:
-      context: ./docker/
-      dockerfile: postgres.dockerfile
+      MARIADB_USER: ${user_db}
+      MARIADB_PASSWORD: ${passwd_db}
+      MARIADB_DATABASE: streamers
+    volumes:
+      - mariadb_data:/var/lib/mariadb/data/
+
+volumes:
+  mariadb_data:

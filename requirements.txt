@@ -3,7 +3,7 @@ tweepy==3.10
 requests
 SQLAlchemy
 SQLAlchemy-Utils
-psycopg2
+mariadb
 schedule
 Pillow
 python-dotenv
