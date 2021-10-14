@@ -6,12 +6,12 @@ from sqlalchemy import MetaData, create_engine
 from sqlalchemy.exc import OperationalError as SqlAlchemyError
 
 # Credenciais da Base de Dados
-user_db = getenv('user_db')
-passwd_db = getenv('passwd_db')
+user_db = getenv("user_db")
+passwd_db = getenv("passwd_db")
 
 # Variaveis opcionais
-host_db = getenv('host_db')
-port_db = getenv('port_db')
+host_db = getenv("host_db")
+port_db = getenv("port_db")
 
 try:
     # Caso a password tenha caracteres especiais
@@ -37,6 +37,7 @@ except SqlAlchemyError as e:
     print(e)
     exit()
 
+
 def return_streamer_info():
     """
     Retonar as os valores das colunas de todos os streamers
@@ -46,14 +47,16 @@ def return_streamer_info():
 
     return result
 
+
 def return_streamer_names():
     """
     Retorna o nome dos streamers
     """
 
-    result = engine.execute("SELECT Nome FROM livecoders")
+    result = engine.execute("SELECT * FROM livecoders")
 
     return result
+
 
 def insert_streamers(streamers):
     """
@@ -77,6 +80,7 @@ def insert_streamers(streamers):
 
         engine.execute(ins)
 
+
 def insert_on_stream(idt, value):
     """
     Atribui true ou false à coluna OnStream
@@ -88,6 +92,7 @@ def insert_on_stream(idt, value):
         .where(livecoders.c.id == int(idt))
     )
     engine.execute(upd)
+
 
 def update_name(idt, name, twitch):
     """
@@ -101,6 +106,7 @@ def update_name(idt, name, twitch):
     )
     engine.execute(upd)
 
+
 def delete_streamer(idt):
     """
     Função que elimina streamer da DB com base no id
@@ -108,6 +114,7 @@ def delete_streamer(idt):
 
     delete = livecoders.delete().where(livecoders.c.id == int(idt))
     engine.execute(delete)
+
 
 def set_timedout(idt, bool):
     """
