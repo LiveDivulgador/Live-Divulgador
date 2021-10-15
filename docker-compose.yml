@@ -18,7 +18,7 @@ services:
       MARIADB_PASSWORD: ${DATABASE_PASSWORD}
       MARIADB_DATABASE: ${DATABASE}
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql/
     restart: always
 
 volumes:
