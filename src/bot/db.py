@@ -6,12 +6,12 @@ from sqlalchemy import MetaData, create_engine
 from sqlalchemy.exc import OperationalError as SqlAlchemyError
 
 # Credenciais da Base de Dados
-user_db = getenv("user_db")
-passwd_db = getenv("passwd_db")
+user_db = getenv('DATABASE_USER')
+passwd_db = getenv('DATABASE_PASSWORD')
 
 # Variaveis opcionais
-host_db = getenv("host_db")
-port_db = getenv("port_db")
+host_db = getenv('DATABASE_HOST')
+port_db = getenv('DATABASE_PORT')
 
 try:
     # Caso a password tenha caracteres especiais

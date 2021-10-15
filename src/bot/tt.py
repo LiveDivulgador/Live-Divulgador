@@ -16,16 +16,16 @@ def twitter_oauth(streamer_type):
     Função que faz OAuth na conta correta
     """
 
-    CONSUMER_KEY = os.environ["CONSUMER_KEY_C"]
-    CONSUMER_SECRET = os.environ["CONSUMER_SECRET_C"]
-    ACCESS_TOKEN = os.environ["ACCESS_TOKEN_C"]
-    ACCESS_TOKEN_SECRET = os.environ["ACCESS_TOKEN_SECRET_C"]
+    CONSUMER_KEY = os.environ["CONSUMER_KEY_A"]
+    CONSUMER_SECRET = os.environ["CONSUMER_KEY_A"]
+    ACCESS_TOKEN = os.environ["CONSUMER_KEY_A"]
+    ACCESS_TOKEN_SECRET = os.environ["CONSUMER_KEY_A"]
 
     if streamer_type == "art":
-        CONSUMER_KEY = os.environ["CONSUMER_KEY_A"]
-        CONSUMER_SECRET = os.environ["CONSUMER_SECRET_A"]
-        ACCESS_TOKEN = os.environ["ACCESS_TOKEN_A"]
-        ACCESS_TOKEN_SECRET = os.environ["ACCESS_TOKEN_SECRET_A"]
+        CONSUMER_KEY = os.environ["CONSUMER_KEY_B"]
+        CONSUMER_SECRET = os.environ["CONSUMER_KEY_B"]
+        ACCESS_TOKEN = os.environ["CONSUMER_KEY_B"]
+        ACCESS_TOKEN_SECRET = os.environ["CONSUMER_KEY_B"]
 
     try:
         auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
@@ -92,7 +92,7 @@ Entra aí: https://www.{twitch}
         name_img, is_image = get_image(name, ROOT_DIR)
 
         # Se estivermos em produção
-        if os.getenv("Env") == "Prod":
+        if os.getenv("ENV") == "Prod":
             # Se conseguiu descarregar a imagem
             # Se o streamer permitiu o print
             if is_image and is_print:

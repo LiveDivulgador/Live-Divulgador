@@ -2,7 +2,6 @@ version: '3.1'
 
 services:
   livedivulgador:
-    restart: always
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,19 +9,17 @@ services:
       - db
     env_file:
       - .env
+    restart: always
 
   db:
     image: mariadb:latest
-    container_name: mariadb
-    restart: always
-    env_file:
-      - .env
     environment:
-      MARIADB_USER: ${user_db}
-      MARIADB_PASSWORD: ${passwd_db}
-      MARIADB_DATABASE: streamers
+      MARIADB_USER: ${DATABASE_USER}
+      MARIADB_PASSWORD: ${DATABASE_PASSWORD}
+      MARIADB_DATABASE: ${DATABASE}
     volumes:
-      - mariadb_data:/var/lib/mariadb/data/
+      - mariadb_data:/var/lib/mysql
+    restart: always
 
 volumes:
   mariadb_data:
