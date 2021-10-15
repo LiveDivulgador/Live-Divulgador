@@ -8,10 +8,10 @@ from os import getenv
 load_dotenv()
 
 
-user_db = getenv("user_db")
-passwd_db = getenv("passwd_db")
-host_db = getenv("host_db")
-port_db = getenv("port_db")
+user_db = getenv("DATABASE_USER")
+passwd_db = getenv("DATABASE_PASSWORD")
+host_db = getenv("DATABASE_HOST")
+port_db = getenv("DATABASE_PORT")
 
 
 engine = create_engine(

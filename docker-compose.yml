@@ -2,7 +2,6 @@ version: '3.1'
 
 services:
   livedivulgador:
-    restart: always
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,15 +9,14 @@ services:
       - db
     env_file:
       - .env
+    restart: always
 
   db:
-    restart: always
-    env_file:
-      - .env
-    environment:
-      POSTGRES_USER: ${user_db}
-      POSTGRES_PASSWORD: ${passwd_db}
-      POSTGRES_DB: streamers
     build:
       context: ./docker/
       dockerfile: postgres.dockerfile
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE}
+    restart: always
