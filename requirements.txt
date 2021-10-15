@@ -1,10 +1,6 @@
-Flask
 tweepy==3.10
-requests
+httpx
 SQLAlchemy
-SQLAlchemy-Utils
 mariadb
-schedule
 Pillow
 python-dotenv
-black
