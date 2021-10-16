@@ -33,6 +33,24 @@ class TwitchClient:
 
         return res_json["access_token"]
 
+    def get_streams(self):
+        """
+        Obter informações sobre todas as streams
+        """
+
+        url = f"{self.base_url}helix/streams"
+
+        res = get(url, headers=self.auth_header)
+
+        res_json = handle_response(res)
+
+        res_data = res_json.get("data")
+
+        if res_data != []:
+            return res_data
+
+        return False
+
     def get_stream(self, user_id: str) -> Union[bool, dict]:
         """
         Obter informações sobre um stream
