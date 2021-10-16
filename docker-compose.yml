@@ -14,9 +14,14 @@ services:
   db:
     build:
       context: ./docker/
-      dockerfile: postgres.dockerfile
+      dockerfile: database.dockerfile
     environment:
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE}
+      MARIADB_USER: ${DATABASE_USER}
+      MARIADB_PASSWORD: ${DATABASE_PASSWORD}
+      MARIADB_DATABASE: ${DATABASE}
+    volumes:
+      - mariadb_data:/var/lib/mysql/
     restart: always
+
+volumes:
+  mariadb_data:

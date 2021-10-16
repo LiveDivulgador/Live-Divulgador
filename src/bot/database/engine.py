@@ -15,7 +15,7 @@ port_db = getenv("DATABASE_PORT")
 
 
 engine = create_engine(
-    "postgresql://{}:{}@{}:{}/streamers".format(
+    "mariadb+mariadbconnector://{}:{}@{}:{}/streamers".format(
         user_db, quote_plus(passwd_db), host_db, port_db
     )
 )
