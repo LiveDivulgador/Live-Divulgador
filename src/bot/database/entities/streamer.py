@@ -14,11 +14,8 @@ class Streamer(Base):
     id = Column(Integer, primary_key=True, autoincrement=True, unique=True)
     twitch_id = Column(Integer)
     twitter_id = Column(Integer)
-    category_id = Column(ForeignKey("categories.id"))
     name = Column(String)
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
     updated_at = Column(
         TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow
     )
-
-    category = relationship("Category", back_populates="streamers")
