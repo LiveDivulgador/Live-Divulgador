@@ -33,9 +33,9 @@ class TwitchClient:
 
         return res_json["access_token"]
 
-    def get_streams(self):
+    def get_random_streams(self):
         """
-        Obter informações sobre todas as streams
+        Obter informações sobre todos os streams
         """
 
         url = f"{self.base_url}helix/streams"
@@ -51,11 +51,13 @@ class TwitchClient:
 
         return False
 
-    def get_stream(self, user_id: str) -> Union[bool, dict]:
+    def get_streams(self, user_ids: list[str]) -> list[dict]:
         """
-        Obter informações sobre um stream
+        Obter informações sobre streams de vários usuários
         """
-        url = f"{self.base_url}helix/streams?user_id={user_id}"
+        query = "&user_id=".join(user_ids)
+
+        url = f"{self.base_url}helix/streams/?user_id={query}"
 
         res = get(url, headers=self.auth_header)
 
@@ -63,10 +65,7 @@ class TwitchClient:
 
         res_data = res_json.get("data")
 
-        if res_data != []:
-            return res_data[0]
-
-        return False
+        return res_data
 
     def get_streamer_id(self, streamer_name: str) -> Union[bool, str]:
         """

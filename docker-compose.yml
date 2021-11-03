@@ -1,7 +1,8 @@
 version: '3.1'
 
 services:
-  livedivulgador:
+  app:
+    container_name: livedivulgator_app
     build:
       context: .
       dockerfile: Dockerfile
@@ -9,18 +10,25 @@ services:
       - db
     env_file:
       - .env
-    restart: always
+    # restart: always
+    # command: pytest -k send_tweet
 
   db:
+    container_name: livedivulgator_db
+    ports:
+      - "3306:3306"
     build:
       context: ./docker/
       dockerfile: database.dockerfile
     environment:
+
+      MARIADB_RANDOM_ROOT_PASSWORD: "yes"
       MARIADB_USER: ${DATABASE_USER}
       MARIADB_PASSWORD: ${DATABASE_PASSWORD}
-      MARIADB_DATABASE: ${DATABASE}
+      MARIADB_DATABASE: ${DATABASE_NAME}
     volumes:
-      - mariadb_data:/var/lib/mysql/
+      - mariadb_data:/var/lib
+
     restart: always
 
 volumes:

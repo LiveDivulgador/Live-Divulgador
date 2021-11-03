@@ -2,5 +2,5 @@ tweepy==3.10
 httpx
 SQLAlchemy
 mariadb
-Pillow
 python-dotenv
+pyyaml

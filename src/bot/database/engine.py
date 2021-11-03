@@ -8,16 +8,14 @@ from os import getenv
 load_dotenv()
 
 
-user_db = getenv("DATABASE_USER")
-passwd_db = getenv("DATABASE_PASSWORD")
-host_db = getenv("DATABASE_HOST")
-port_db = getenv("DATABASE_PORT")
+DATABASE_USER = getenv("DATABASE_USER")
+DATABASE_PASSWORD = quote_plus(getenv("DATABASE_PASSWORD"))
+DATABASE_HOST = getenv("DATABASE_HOST")
+DATABASE_PORT = getenv("DATABASE_PORT")
+DATABASE_NAME = getenv("DATABASE_NAME")
 
+args = f"mariadb+mariadbconnector://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
 
-engine = create_engine(
-    "mariadb+mariadbconnector://{}:{}@{}:{}/streamers".format(
-        user_db, quote_plus(passwd_db), host_db, port_db
-    )
-)
+engine = create_engine(args)
 
-Session = sessionmaker(bind=engine, future=True)
+Session = sessionmaker(bind=engine)
