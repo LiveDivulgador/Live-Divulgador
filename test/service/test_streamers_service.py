@@ -1,13 +1,10 @@
-from src.bot.service.streamers_service import StreamersService
-from src.bot.database.engine import Session
-from src.bot.database.entities.streamer import Streamer
-from src.bot.database.entities.streamer import Base, Streamer
-from src.bot.service.streamers_service import StreamersService
-from src.bot.database.engine import engine
+from live_divulgator.service.streamers_service import StreamersService
+from live_divulgator.database.entities.streamer import Streamer
+from live_divulgator.service.streamers_service import StreamersService
 from pytest import fixture, mark
 
 
-@fixture
+@fixture(scope="module")
 def created_streamer(twitch_id):
     streamer = Streamer(twitch_id=twitch_id, twitter_id=8250, name="Radhy")
     StreamersService.create_streamer(streamer)

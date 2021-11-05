@@ -1,8 +1,9 @@
 from logging import getLogger
+
 from tweepy import API, OAuthHandler
 
-from src.bot.twitter.generics import ClientKeys, TweetMetadata
-from src.bot.twitter.message import Message
+from live_divulgator.twitter.generics import ClientKeys, TweetMetadata
+from live_divulgator.twitter.message import Message
 
 logger = getLogger(__name__)
 
@@ -13,12 +14,8 @@ class TwitterClient:
 
     @staticmethod
     def fetch_api(client_keys: ClientKeys) -> API:
-        auth = OAuthHandler(
-            client_keys.consumer_key, client_keys.consumer_secret
-        )
-        auth.set_access_token(
-            client_keys.access_token, client_keys.access_token_secret
-        )
+        auth = OAuthHandler(client_keys.consumer_key, client_keys.consumer_secret)
+        auth.set_access_token(client_keys.access_token, client_keys.access_token_secret)
 
         api = API(auth)
 

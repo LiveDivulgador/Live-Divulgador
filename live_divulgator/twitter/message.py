@@ -1,8 +1,9 @@
-from os import getcwd
 from enum import Enum
+from os import getcwd
+
 from yaml import FullLoader, load
 
-with open(getcwd() + "/src/bot/twitter/message.yml", "r") as file:
+with open(getcwd() + "/live_divulgator/twitter/message.yml", "r") as file:
     stream = file.read()
     data = load(stream, Loader=FullLoader)
 

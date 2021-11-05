@@ -2,9 +2,9 @@ from pytest import fixture, mark
 from dotenv import load_dotenv
 from os import getenv
 from pytest_schema import schema
-from src.bot.twitch.client import TwitchClient
+from live_divulgator.twitch.client import TwitchClient
 
-from src.bot.twitter.client import ClientKeys, TweetMetadata, TwitterClient
+from live_divulgator.twitter.client import ClientKeys, TweetMetadata, TwitterClient
 
 load_dotenv()
 

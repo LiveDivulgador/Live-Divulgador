@@ -1,6 +1,9 @@
 from typing import Union
+
 from httpx import get, post
-from src.bot.twitch.handlers import handle_response
+
+from live_divulgator.helpers.slice import slice_queue
+from live_divulgator.twitch.handlers import handle_response
 
 
 class TwitchClient:
@@ -55,17 +58,24 @@ class TwitchClient:
         """
         Obter informações sobre streams de vários usuários
         """
-        query = "&user_id=".join(user_ids)
+        streams = []
+        user_ids_generator = slice_queue(user_ids)
 
-        url = f"{self.base_url}helix/streams/?user_id={query}"
+        for user_ids_slice in user_ids_generator:
+            query = "&user_id=".join(user_ids_slice)
+            url = f"{self.base_url}helix/streams/?user_id={query}"
 
-        res = get(url, headers=self.auth_header)
+            res = get(url, headers=self.auth_header)
 
-        res_json = handle_response(res)
+            res_json = handle_response(res)
 
-        res_data = res_json.get("data")
+            res_data = res_json.get("data")
 
-        return res_data
+            streams.append(res_data)
+
+        flattened_streams = [item for sublist in streams for item in sublist]
+
+        return flattened_streams
 
     def get_streamer_id(self, streamer_name: str) -> Union[bool, str]:
         """

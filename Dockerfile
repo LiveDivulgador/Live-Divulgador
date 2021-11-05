@@ -21,4 +21,3 @@ RUN apt-get update \
 WORKDIR /app
 
 # CMD [ "python3", "./app/src/bot/main.py" ]
-

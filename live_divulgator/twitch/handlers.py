@@ -1,7 +1,8 @@
 from httpx import Response
-from src.bot.twitch.exceptions import (
-    InvalidCredentialsException,
+
+from live_divulgator.twitch.exceptions import (
     InsufficientPermissions,
+    InvalidCredentialsException,
     ObjectNotFoundException,
     TwitchException,
     UnexpectedResponseException,

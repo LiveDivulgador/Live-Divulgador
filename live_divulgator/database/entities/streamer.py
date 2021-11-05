@@ -15,6 +15,4 @@ class Streamer(Base):
     twitter_id = Column(Integer)
     name = Column(String)
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
-    updated_at = Column(
-        TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow
-    )
+    updated_at = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
