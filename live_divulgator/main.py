@@ -1,8 +1,13 @@
-from live_divulgator.bots.live_divulgator import LiveDivulgator
-from logging import getLogger, basicConfig, DEBUG, INFO, captureWarnings
-from live_divulgator.plugins.twitter import TwitterPlugin
 import warnings
+from datetime import timedelta
+from logging import DEBUG, INFO, basicConfig, captureWarnings, getLogger
+from time import sleep
+
 import click
+from timeloop import Timeloop
+
+from live_divulgator.bots.live_divulgator import LiveDivulgator
+from live_divulgator.plugins.twitter import TwitterPlugin
 
 logger = getLogger(__name__)
 
@@ -28,12 +33,24 @@ def main(debug):
 
 @main.command("run")
 def run():
-    config = TwitterPlugin
+    execute = True
+    tl = Timeloop()
+    divulgator = LiveDivulgator()
+    divulgator.add_plugin(TwitterPlugin)
 
-    live_divulgator = LiveDivulgator()
+    @tl.job(interval=timedelta(seconds=30))
+    def start_loop():
+        divulgator.run()
 
-    live_divulgator.add_plugin(config)
-    live_divulgator.run()
+    tl.start()
+
+    while execute:
+        try:
+            sleep(1)
+        except KeyboardInterrupt:
+            logger.warning("Stopping Live Divulgator bot")
+            tl.stop()
+            execute = False
 
 
 if __name__ == "__main__":

@@ -104,6 +104,11 @@ class PostTweet:
             map(cls.generate_tweet_metadata, not_cached_live_list)
         )
 
+        if not_cached_live_list == []:
+            logger.info("No new live streamers to tweet")
+
+        logger.info(f"Tweeting about streamers")
         deque(map(cls.twitter_client.send_tweet, live_tweet_metadata))
 
         deque(map(cls.update_tweeted, not_cached_live_list))
+        logger.info("Updated tweeted streamers")

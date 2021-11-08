@@ -1,5 +1,5 @@
 from abc import ABC
-from collections import deque
+
 from live_divulgator.plugins.plugin import Plugin
 
 

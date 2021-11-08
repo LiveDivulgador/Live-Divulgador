@@ -1,9 +1,7 @@
 from typing import Generator
 
 
-def slice_queue(
-    queue: list[str], initial_slice=0, chunk_size=100
-) -> Generator[list[str]]:
+def slice_queue(queue: list[str], initial_slice=0, chunk_size=100) -> Generator:
     """
     Slices a queue into chunks of size `chunk_size`
     """
