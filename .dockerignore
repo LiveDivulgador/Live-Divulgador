@@ -151,3 +151,9 @@ streamers.csv
 
 # Docker
 .docker
+.eggs
+*.egg-info
+src
+test
+Dockerfile
+docker/dump.sql

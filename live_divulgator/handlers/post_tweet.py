@@ -38,7 +38,6 @@ class PostTweet:
     def handle(cls) -> None:
         try:
             data = VerifyOnlineStreamers.handle()
-            logger.info("Tweeting about `data`")
             cls.tweet(data)
         except Exception as e:
             logger.error(e)
@@ -82,7 +81,7 @@ class PostTweet:
                 cls.cache["tweeted"].remove(element)
 
     @classmethod
-    def remove_cached_from_tweet_list(cls, data):
+    def remove_cached_from_tweet_list(cls, data) -> list[dict]:
         cls.refresh_tweeted_cache()
 
         tweeted = cls.cache["tweeted"]
@@ -97,6 +96,28 @@ class PostTweet:
         return online_streamer_to_tweet
 
     @classmethod
+    def handle_send_tweets(
+        cls, not_cached_live_list: list[dict], live_tweet_metadata: list[TweetMetadata]
+    ) -> None:
+        if not_cached_live_list != []:
+            logger.info(f"Tweeting about streamers")
+            deque(map(cls.twitter_client.send_tweet, live_tweet_metadata))
+
+            return None
+
+        logger.info("No new live streamers to tweet")
+
+    @classmethod
+    def handle_update_cache(cls, not_cached_live_list: list) -> None:
+        if not_cached_live_list != []:
+            deque(map(cls.update_tweeted, not_cached_live_list))
+            logger.info("Updated tweeted streamers")
+
+            return None
+
+        logger.info("No new live streamers to add to cache")
+
+    @classmethod
     def tweet(cls, live_list: list[dict]) -> None:
         not_cached_live_list = cls.remove_cached_from_tweet_list(live_list)
 
@@ -104,11 +125,6 @@ class PostTweet:
             map(cls.generate_tweet_metadata, not_cached_live_list)
         )
 
-        if not_cached_live_list == []:
-            logger.info("No new live streamers to tweet")
+        cls.handle_send_tweets(not_cached_live_list, live_tweet_metadata)
 
-        logger.info(f"Tweeting about streamers")
-        deque(map(cls.twitter_client.send_tweet, live_tweet_metadata))
-
-        deque(map(cls.update_tweeted, not_cached_live_list))
-        logger.info("Updated tweeted streamers")
+        cls.handle_update_cache(not_cached_live_list)

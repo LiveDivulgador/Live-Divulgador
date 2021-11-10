@@ -1,6 +1,8 @@
-tweepy==3.10
-httpx
 SQLAlchemy
+click
+httpx
 mariadb
 python-dotenv
 pyyaml
+timeloop
+tweepy

@@ -2,21 +2,19 @@ version: '3.1'
 
 services:
   app:
+    image: vcwild/livedivulgator
     container_name: livedivulgator_app
-    build:
-      context: .
-      dockerfile: Dockerfile
     depends_on:
       - db
     env_file:
       - .env
-    # restart: always
-    # command: pytest -k send_tweet
+    environment:
+      DATABASE_HOST: livedivulgator_db
+    entrypoint: python3
+    command: main.py run
 
   db:
     container_name: livedivulgator_db
-    ports:
-      - "3306:3306"
     build:
       context: ./docker/
       dockerfile: database.dockerfile
