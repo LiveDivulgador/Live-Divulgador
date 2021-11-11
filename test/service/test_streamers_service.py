@@ -1,6 +1,6 @@
-from live_divulgator.service.streamers_service import StreamersService
-from live_divulgator.database.entities.streamer import Streamer
-from live_divulgator.service.streamers_service import StreamersService
+from livedivulgador.service.streamers_service import StreamersService
+from livedivulgador.database.entities.streamer import Streamer
+from livedivulgador.service.streamers_service import StreamersService
 from pytest import fixture, mark
 
 

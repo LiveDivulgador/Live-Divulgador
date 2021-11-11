@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from live_divulgator.service.streamers_service import StreamersService
+from livedivulgador.service.streamers_service import StreamersService
 
 logger = getLogger(__name__)
 

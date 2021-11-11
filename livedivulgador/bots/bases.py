@@ -1,6 +1,6 @@
 from abc import ABC
 
-from live_divulgator.plugins.plugin import Plugin
+from livedivulgador.plugins.plugin import Plugin
 
 
 class Bot(ABC):

@@ -2,22 +2,20 @@ version: '3.1'
 
 services:
   app:
-    image: vcwild/livedivulgator
-    container_name: livedivulgator_app
+    image: vcwild/livedivulgador_app
+    container_name: livedivulgador_app
     depends_on:
       - db
     env_file:
       - .env
     environment:
-      DATABASE_HOST: livedivulgator_db
+      DATABASE_HOST: livedivulgador_db
     entrypoint: python3
     command: main.py run
 
   db:
-    container_name: livedivulgator_db
-    build:
-      context: ./docker/
-      dockerfile: database.dockerfile
+    image: vcwild/livedivulgador_db
+    container_name: livedivulgador_db
     environment:
       MARIADB_RANDOM_ROOT_PASSWORD: "yes"
       MARIADB_USER: ${DATABASE_USER}

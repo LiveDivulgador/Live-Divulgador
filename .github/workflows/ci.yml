@@ -16,4 +16,4 @@ jobs:
           python -m pip install --upgrade pip
           pip install black
       - name: Execute the black linter
-        run: black -l 79 -S live_divulgator --check
+        run: black -l 79 -S livedivulgador --check

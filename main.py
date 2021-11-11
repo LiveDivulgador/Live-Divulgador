@@ -6,8 +6,8 @@ from time import sleep
 import click
 from timeloop import Timeloop
 
-from live_divulgator.bots.live_divulgator import LiveDivulgator
-from live_divulgator.plugins.twitter import TwitterPlugin
+from livedivulgador.bots.livedivulgador import LiveDivulgador
+from livedivulgador.plugins.twitter import TwitterPlugin
 
 logger = getLogger(__name__)
 
@@ -28,19 +28,20 @@ def main(debug):
     warnings.simplefilter("default")
     captureWarnings(True)
 
-    logger.warning("Starting Live Divulgator bot")
+    logger.warning("Starting Live Divulgador bot")
 
 
 @main.command("run")
 def run():
-    execute = True
     tl = Timeloop()
-    divulgator = LiveDivulgator()
-    divulgator.add_plugin(TwitterPlugin)
+    tl.logger = logger
+    execute = True
+    divulgador = LiveDivulgador()
+    divulgador.add_plugin(TwitterPlugin)
 
     @tl.job(interval=timedelta(seconds=30))
     def start_loop():
-        divulgator.run()
+        divulgador.run()
 
     tl.start()
 
@@ -48,7 +49,7 @@ def run():
         try:
             sleep(1)
         except KeyboardInterrupt:
-            logger.warning("Stopping Live Divulgator bot")
+            logger.warning("Stopping Live Divulgador bot")
             tl.stop()
             execute = False
 

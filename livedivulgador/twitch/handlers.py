@@ -1,6 +1,6 @@
 from httpx import Response
 
-from live_divulgator.twitch.exceptions import (
+from livedivulgador.twitch.exceptions import (
     InsufficientPermissions,
     InvalidCredentialsException,
     ObjectNotFoundException,

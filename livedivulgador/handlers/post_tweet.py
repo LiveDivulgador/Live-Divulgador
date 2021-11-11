@@ -4,9 +4,9 @@ from os import getenv
 
 from dotenv import load_dotenv
 
-from live_divulgator.handlers.verify_online_streamers import VerifyOnlineStreamers
-from live_divulgator.helpers.timeout import TimeoutValue
-from live_divulgator.twitter.client import ClientKeys, TweetMetadata, TwitterClient
+from livedivulgador.handlers.verify_online_streamers import VerifyOnlineStreamers
+from livedivulgador.helpers.timeout import TimeoutValue
+from livedivulgador.twitter.client import ClientKeys, TweetMetadata, TwitterClient
 
 load_dotenv()
 

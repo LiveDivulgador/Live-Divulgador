@@ -1,9 +1,9 @@
 from logging import getLogger
 
 from tweepy import API, OAuthHandler
-
-from live_divulgator.twitter.generics import ClientKeys, TweetMetadata
-from live_divulgator.twitter.message import Message
+from tweepy.errors import Forbidden
+from livedivulgador.twitter.generics import ClientKeys, TweetMetadata
+from livedivulgador.twitter.message import Message
 
 logger = getLogger(__name__)
 
@@ -42,7 +42,10 @@ class TwitterClient:
             tweet_metadata.thumbnail,
         )
 
+        channel_name = str(tweet_metadata.twitch_channel).split("/")[-1]
+
         try:
             self._api.update_status(status=message)
-        except Exception as err:
-            logger.error(f"{self.__class__.__name__} error: {err}")
+            logger.info(f"{channel_name} tweet sent successfully")
+        except Forbidden:
+            logger.error(f"Exception: {channel_name} tweet was already done")

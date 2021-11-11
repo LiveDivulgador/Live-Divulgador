@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from live_divulgator.twitter.message import Message
+from livedivulgador.twitter.message import Message
 
 
 @dataclass

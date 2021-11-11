@@ -2,9 +2,6 @@
 
 source $(dirname "$0")/common.sh
 
-current_directory="$(pwd)"
-virtualenv_directory="$current_directory/venv"
-
 main() {
   print_header "Preparing python virtual environment"
 
@@ -18,14 +15,14 @@ main() {
   print_check "pip install setuptools_scm"
 
   # install local development build
-  echo -e "       ... installing Livedivulgator bot component"
+  echo -e "       ... installing $project_name bot component"
   $virtualenv_directory/bin/pip install -e .[dev] >/dev/null 2>&1
-  print_check "bot installation"
+  print_check "$project_name bot installation"
 
   # check installation
   echo -e "       ... checking CLI"
   $virtualenv_directory/bin/divulgator --help >/dev/null 2>&1
-  print_check "divulgator CLI installation"
+  print_check "$project_name CLI installation"
 }
 
 # main

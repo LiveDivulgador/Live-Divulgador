@@ -1,13 +1,13 @@
 from pytest import fixture
-from live_divulgator.bots.live_divulgator import LiveDivulgator
-from live_divulgator.plugins.twitter import TwitterPlugin
+from livedivulgador.bots.livedivulgador import LiveDivulgador
+from livedivulgador.plugins.twitter import TwitterPlugin
 
 
 @fixture
-def livedivulgator():
+def livedivulgador():
     plugins_list = [TwitterPlugin]
 
-    bot = LiveDivulgator()
+    bot = LiveDivulgador()
 
     bot.add_plugins(plugins_list)
 
@@ -16,5 +16,5 @@ def livedivulgator():
     del bot
 
 
-def test_livedivulgator_init(livedivulgator):
-    livedivulgator.run()
+def test_livedivulgador_init(livedivulgador):
+    livedivulgador.run()
