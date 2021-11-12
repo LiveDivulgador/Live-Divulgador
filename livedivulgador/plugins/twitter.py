@@ -10,5 +10,5 @@ logger = getLogger(__name__)
 class TwitterPlugin(Plugin):
     @staticmethod
     def run():
-        logger.info("Running twitter plugin")
+        logger.debug(f"Running {__class__.__name__}")
         PostTweet.handle()

@@ -18,3 +18,4 @@ class TweetMetadata:
     twitch_stream_title: str
     tags: str = Message.TAGS
     thumbnail: str = ""
+    category: str = ""

@@ -1,12 +1,14 @@
 from collections import deque
 from logging import getLogger
 from os import getenv
+from typing import Union
 
 from dotenv import load_dotenv
 
 from livedivulgador.handlers.verify_online_streamers import VerifyOnlineStreamers
 from livedivulgador.helpers.timeout import TimeoutValue
 from livedivulgador.twitter.client import ClientKeys, TweetMetadata, TwitterClient
+from livedivulgador.twitch.categories import LiveStreamCategories
 
 load_dotenv()
 
@@ -44,22 +46,31 @@ class PostTweet:
             raise e
 
     @classmethod
-    def generate_tweet_metadata(cls, data: dict) -> TweetMetadata:
+    def generate_tweet_metadata(cls, data: dict) -> Union[TweetMetadata, None]:
+        enabled_categories = LiveStreamCategories().enabled_categories
+
         user_name = data["user_name"]
         live_title = data["title"]
         twitch_channel = f"https://twitch.tv/{data['user_name']}"
+        category = data["game_name"]
         tags = "#Twitch #live"
         thumbnail = ""
 
-        tweet_metadata = TweetMetadata(
-            twitter_display_name=user_name,
-            twitch_channel=twitch_channel,
-            twitch_stream_title=live_title,
-            tags=tags,
-            thumbnail=thumbnail,
-        )
+        if category in enabled_categories:
+            tweet_metadata = TweetMetadata(
+                twitter_display_name=user_name,
+                twitch_channel=twitch_channel,
+                twitch_stream_title=live_title,
+                tags=tags,
+                thumbnail=thumbnail,
+                category=category,
+            )
 
-        return tweet_metadata
+            return tweet_metadata
+
+        logger.info(f"Skipping {user_name}: the category `{category}` is not enabled")
+
+        return None
 
     @classmethod
     def update_tweeted(cls, data: dict) -> None:
@@ -82,6 +93,7 @@ class PostTweet:
 
     @classmethod
     def remove_cached_from_tweet_list(cls, data) -> list[dict]:
+        """Removes already tweeted users from the queue of incoming tweets"""
         cls.refresh_tweeted_cache()
 
         tweeted = cls.cache["tweeted"]
@@ -100,7 +112,7 @@ class PostTweet:
         cls, not_cached_live_list: list[dict], live_tweet_metadata: list[TweetMetadata]
     ) -> None:
         if not_cached_live_list != []:
-            logger.info(f"Tweeting about streamers")
+            logger.debug(f"Tweeting about streamers")
             deque(map(cls.twitter_client.send_tweet, live_tweet_metadata))
 
             return None
@@ -115,16 +127,29 @@ class PostTweet:
 
             return None
 
-        logger.info("No new live streamers to add to cache")
+        logger.debug("No new live streamers to add to cache")
+
+    @classmethod
+    def handle_prepare_tweets(
+        cls, live_list: list[dict]
+    ) -> tuple[list[dict], list[TweetMetadata]]:
+        """Defines streamers to receive new tweets and prepare the tweet list"""
+        not_cached_streamers: list[dict] = cls.remove_cached_from_tweet_list(live_list)
+
+        live_tweet_metadata: list[Union[TweetMetadata, None]] = list(
+            map(cls.generate_tweet_metadata, not_cached_streamers)
+        )
+
+        filtered_live_tweet_metadata: list[TweetMetadata] = list(
+            filter(None.__ne__, live_tweet_metadata)
+        )
+
+        return (not_cached_streamers, filtered_live_tweet_metadata)
 
     @classmethod
     def tweet(cls, live_list: list[dict]) -> None:
-        not_cached_live_list = cls.remove_cached_from_tweet_list(live_list)
+        not_cached_streamers, live_tweet_metadata = cls.handle_prepare_tweets(live_list)
 
-        live_tweet_metadata: list[TweetMetadata] = list(
-            map(cls.generate_tweet_metadata, not_cached_live_list)
-        )
+        cls.handle_send_tweets(not_cached_streamers, live_tweet_metadata)
 
-        cls.handle_send_tweets(not_cached_live_list, live_tweet_metadata)
-
-        cls.handle_update_cache(not_cached_live_list)
+        cls.handle_update_cache(not_cached_streamers)
