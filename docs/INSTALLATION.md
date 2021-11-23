@@ -17,7 +17,9 @@ This is a very straightforward method. In order to be able to run the bot inside
 - [Docker](https://www.docker.com/products/docker-desktop)
 - [Docker-compose](https://docs.docker.com/compose/install/)
 
-Simply run `docker-compose up` to start the bot.
+Fill out the .env.example variables and rename it to .env
+
+Now run `docker-compose up` to start the bot.
 
 ## Development on your local machine
 
@@ -114,6 +116,8 @@ O método de instalação é bem simples. Para conseguir rodar o bot em um conta
 
 - [Docker](https://www.docker.com/products/docker-desktop)
 - [Docker-compose](https://docs.docker.com/compose/install/)
+
+Preencha as variáveis de .env.example e renomeie o arquivo para .env
 
 Execute `docker-compose up` para iniciar o bot.
 
