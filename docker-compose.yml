@@ -12,6 +12,7 @@ services:
       DATABASE_HOST: livedivulgador_db
     entrypoint: python3
     command: main.py run
+    restart: always
 
   db:
     image: vcwild/livedivulgador_db

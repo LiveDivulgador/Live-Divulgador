@@ -1,17 +1,24 @@
 class LiveStreamCategories:
     def __init__(self):
-        self._enabled_categories = [
-            "Art",
-            "Makers & Crafting",
-            "Science & Technology",
-            "Software and Game Development",
-            "Talk Shows & Podcasts",
-        ]
+        self.categories = {
+            "LiveDivulgador": [
+                "Science & Technology",
+                "Software and Game Development",
+                "Talk Shows & Podcasts",
+            ],
+            "LiveDivulgador2": [
+                "Art",
+                "Makers & Crafting",
+            ],
+        }
 
-    @property
-    def enabled_categories(self):
+        self._enabled_categories = None
+
+    def get_enabled_categories(self):
         return self._enabled_categories
 
-    @enabled_categories.setter
-    def enabled_categories(self, categories: list):
+    def set_enabled_categories(self, categories: list):
         self._enabled_categories = categories
+
+    def reflect_enabled_categories(self, bot_name: str):
+        self.set_enabled_categories(self.categories[bot_name])

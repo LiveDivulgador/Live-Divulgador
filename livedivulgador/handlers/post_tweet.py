@@ -30,6 +30,10 @@ class PostTweet:
         CONSUMER_KEY_A, CONSUMER_SECRET_A, ACCESS_TOKEN_A, ACCESS_TOKEN_SECRET_A
     )
 
+    live_stream_categories = LiveStreamCategories()
+    live_stream_categories.reflect_enabled_categories("LiveDivulgador")
+    enabled_categories = live_stream_categories.get_enabled_categories()
+
     twitter_client = TwitterClient(client_keys)
 
     cache: dict = {
@@ -47,7 +51,6 @@ class PostTweet:
 
     @classmethod
     def generate_tweet_metadata(cls, data: dict) -> Union[TweetMetadata, None]:
-        enabled_categories = LiveStreamCategories().enabled_categories
 
         user_name = data["user_name"]
         live_title = data["title"]
@@ -56,7 +59,7 @@ class PostTweet:
         tags = "#Twitch #live"
         thumbnail = ""
 
-        if category in enabled_categories:
+        if category in cls.enabled_categories:
             tweet_metadata = TweetMetadata(
                 twitter_display_name=user_name,
                 twitch_channel=twitch_channel,

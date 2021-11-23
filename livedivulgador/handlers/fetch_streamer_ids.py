@@ -6,15 +6,20 @@ logger = getLogger(__name__)
 
 
 class FetchStreamerIds:
-    @staticmethod
-    def handle():
-        try:
-            logger.info("Fetching streamer ids")
-            result = StreamersService.select_all_by_twitch_id()
-        except Exception as e:
-            logger.error(e)
-            raise e
+    is_cached = False
+    streamer_ids = []
 
-        filtered = [str(r.twitch_id) for r in result]
+    @classmethod
+    def handle(cls):
+        if not cls.is_cached:
+            try:
+                logger.info("Fetching streamer ids")
+                result = StreamersService.select_all_by_twitch_id()
+                cls.streamer_ids = [str(r.twitch_id) for r in result]
+            except Exception as e:
+                logger.error(e)
+                raise e
 
-        return filtered
+            cls.is_cached = True
+
+        return cls.streamer_ids

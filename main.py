@@ -1,3 +1,4 @@
+from typing import ClassVar
 import warnings
 from datetime import timedelta
 from logging import DEBUG, INFO, basicConfig, captureWarnings, getLogger
@@ -7,7 +8,9 @@ import click
 from timeloop import Timeloop
 
 from livedivulgador.bots.livedivulgador import LiveDivulgador
+from livedivulgador.plugins.plugin import Plugin
 from livedivulgador.plugins.twitter import TwitterPlugin
+from livedivulgador.plugins.twitter_alternative import TwitterAlternativePlugin
 
 logger = getLogger(__name__)
 
@@ -31,17 +34,36 @@ def main(debug):
     logger.warning("Starting Live Divulgador bot")
 
 
+def create_bots(_class, plugins: list[Plugin]):
+    bots = [create_bot(_class, plugin) for plugin in plugins]
+
+    return bots
+
+
+def create_bot(_class, plugin: Plugin):
+    bot = _class()
+    bot.add_plugin(plugin)
+
+    return bot
+
+
 @main.command("run")
 def run():
     tl = Timeloop()
     tl.logger = logger
     execute = True
-    divulgador = LiveDivulgador()
-    divulgador.add_plugin(TwitterPlugin)
+    plugins = [TwitterPlugin, TwitterAlternativePlugin]
+    bots = create_bots(LiveDivulgador, plugins)
 
-    @tl.job(interval=timedelta(seconds=30))
-    def start_loop():
-        divulgador.run()
+    def exec_bots(bots: list[LiveDivulgador]) -> None:
+        [create_bot_routine(bot) for bot in bots]
+
+    def create_bot_routine(bot: LiveDivulgador) -> None:
+        @tl.job(interval=timedelta(seconds=60))
+        def start_loop():
+            bot.run()
+
+    exec_bots(bots)
 
     tl.start()
 
