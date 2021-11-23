@@ -21,7 +21,7 @@ main() {
 
   # check installation
   echo -e "       ... checking CLI"
-  $virtualenv_directory/bin/divulgator --help >/dev/null 2>&1
+  $virtualenv_directory/bin/divulgador --help >/dev/null 2>&1
   print_check "$project_name CLI installation"
 }
 
