@@ -1,5 +1,6 @@
-from sqlalchemy.sql import select
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.sql import select
+
 from livedivulgador.database.engine import Session
 from livedivulgador.database.entities.streamer import Streamer
 
@@ -16,7 +17,9 @@ class StreamersService:
     def get_streamer(twitch_id: int) -> Streamer:
         with Session() as session:
             response = (
-                session.query(Streamer).filter(Streamer.twitch_id == twitch_id).all()
+                session.query(Streamer)
+                .filter(Streamer.twitch_id == twitch_id)
+                .all()
             )
 
         return response
@@ -41,7 +44,9 @@ class StreamersService:
     @staticmethod
     def delete_streamer(twitch_id: int) -> None:
         with Session() as session:
-            session.query(Streamer).filter(Streamer.twitch_id == twitch_id).delete()
+            session.query(Streamer).filter(
+                Streamer.twitch_id == twitch_id
+            ).delete()
             session.commit()
 
     @staticmethod

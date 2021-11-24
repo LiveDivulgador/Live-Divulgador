@@ -11,4 +11,4 @@ class TwitterPlugin(Plugin):
     @staticmethod
     def run():
         logger.debug(f"Running {__class__.__name__}")
-        PostTweet.handle()
+        PostTweet().handle()
