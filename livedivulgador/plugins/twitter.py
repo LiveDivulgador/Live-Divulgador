@@ -1,5 +1,4 @@
 from logging import getLogger
-from typing import Callable
 
 from livedivulgador.handlers.post_tweet import PostTweet
 from livedivulgador.plugins.plugin import Plugin
@@ -11,4 +10,4 @@ class TwitterPlugin(Plugin):
     @staticmethod
     def run():
         logger.debug(f"Running {__class__.__name__}")
-        PostTweet().handle()
+        PostTweet.handle()

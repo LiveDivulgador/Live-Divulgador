@@ -10,4 +10,4 @@ class TwitterAlternativePlugin(Plugin):
     @staticmethod
     def run():
         logger.debug(f"Running {__class__.__name__}")
-        PostTweetAlternative().handle()
+        PostTweetAlternative.handle()
