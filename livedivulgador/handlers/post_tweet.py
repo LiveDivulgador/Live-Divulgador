@@ -9,6 +9,7 @@ from livedivulgador.handlers.verify_online_streamers import (
 )
 from livedivulgador.helpers.timeout import TimeoutValue
 from livedivulgador.twitch.categories import LiveStreamCategories
+from livedivulgador.twitch.tags import LiveStreamTags
 from livedivulgador.twitter.client import (
     ClientKeys,
     TweetMetadata,
@@ -59,7 +60,7 @@ class PostTweet:
         live_title = data["title"]
         twitch_channel = f"https://twitch.tv/{data['user_name']}"
         category = data["game_name"]
-        tags = "#Twitch #live"
+        tags = LiveStreamTags(category).tags
         thumbnail = ""
 
         if category in cls.enabled_categories:
