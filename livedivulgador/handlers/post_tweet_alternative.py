@@ -3,8 +3,8 @@ from os import getenv
 from dotenv import load_dotenv
 
 from livedivulgador.handlers.post_tweet import PostTweet
-from livedivulgador.twitter.client import ClientKeys
 from livedivulgador.twitch.categories import LiveStreamCategories
+from livedivulgador.twitter.client import ClientKeys, TwitterClient
 
 load_dotenv()
 
@@ -24,3 +24,5 @@ class PostTweetAlternative(PostTweet):
     )
 
     enabled_categories = LiveStreamCategories("LiveDivulgador2").enabled_categories
+
+    twitter_client = TwitterClient(client_keys)
