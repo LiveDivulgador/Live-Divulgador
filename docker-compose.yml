@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  app:
+    image: vcwild/livedivulgador_app:1.0
+    container_name: livedivulgador_app
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      DATABASE_HOST: livedivulgador_db
+    entrypoint: python3
+    command: main.py run
+    restart: always
+
+  db:
+    image: vcwild/livedivulgador_db:1.0
+    container_name: livedivulgador_db
+    environment:
+      MARIADB_RANDOM_ROOT_PASSWORD: "yes"
+      MARIADB_USER: ${DATABASE_USER}
+      MARIADB_PASSWORD: ${DATABASE_PASSWORD}
+      MARIADB_DATABASE: ${DATABASE_NAME}
+    volumes:
+      - mariadb_data:/var/lib
+    restart: always
+
+volumes:
+  mariadb_data: null

@@ -1,11 +1,8 @@
-Flask
-tweepy
-requests
 SQLAlchemy
-SQLAlchemy-Utils
-psycopg2
-schedule
-Pillow
+click
+httpx
+mariadb
 python-dotenv
-black
-isort
+pyyaml
+timeloop
+tweepy
