@@ -11,15 +11,20 @@
 
 Divulgador de Twitch streams de Ciência e Tecnologia, Artes e Artesanato e Criadores no Twitter
 
-## Divulgação
+## 🙏 Agradecimentos
+O presente código foi desenvolvido pela comunidade [HubTech](https://github.com/aHub-Tech) a qual temos uma enorme gratidão pelo trabalho desenvolvido!
+
+Fica aqui o fork deles: [Fork do LiveDivulgador](https://github.com/aHub-Tech/Live-Divulgador)
+
+## 📣 Divulgação
 
 Se você for um streamer e quiser ser divulgado pelo Live Divulgador, preencha o [nosso formulário](https://forms.gle/ANNS2P4mnsgWd8St7) de cadastro.
 
-## Instalação
+## 💿 Instalação
 
 Para instalar as dependências do bot, sugerimos que verifique nossa [documentação de instalação](./docs/INSTALLATION.md).
 
-## Colaboração
+## 🤝 Colaboração
 
 Se gostou do projeto e tem interesse em ajudar, pode sempre seguir as contas do bot no Twitter: [@LiveDivulgador](https://twitter.com/LiveDivulgador) e [@LiveDivulgador2](https://twitter.com/LiveDivulgador2)
 
@@ -29,6 +34,6 @@ Também pode contribuir com código ou mesmo reportando falhas e dando palpites 
 
 Opiniões são sempre bem vindas!
 
-## Licença
+## 🏷️ Licença
 
 O projeto do Live Divulgador é software livre e está sob a licença [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html).
