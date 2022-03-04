@@ -37,10 +37,15 @@ class PostTweet:
     }
 
     client_keys = ClientKeys(
-        CONSUMER_KEY_A, CONSUMER_SECRET_A, ACCESS_TOKEN_A, ACCESS_TOKEN_SECRET_A
+        CONSUMER_KEY_A,
+        CONSUMER_SECRET_A,
+        ACCESS_TOKEN_A,
+        ACCESS_TOKEN_SECRET_A,
     )
 
-    enabled_categories = LiveStreamCategories("LiveDivulgador").enabled_categories
+    enabled_categories = LiveStreamCategories(
+        "LiveDivulgador"
+    ).enabled_categories
 
     twitter_client = TwitterClient(client_keys)
 
@@ -75,7 +80,9 @@ class PostTweet:
 
             return tweet_metadata
 
-        logger.info(f"Skipping {user_name}: the category `{category}` is not enabled")
+        logger.info(
+            f"Skipping {user_name}: the category `{category}` is not enabled"
+        )
 
         return None
 
@@ -110,7 +117,9 @@ class PostTweet:
             lambda user: user if user["user_id"] not in tweeted_ids else None
         )
 
-        online_streamer_to_tweet = list(filter(online_streamer_not_cached, data))
+        online_streamer_to_tweet = list(
+            filter(online_streamer_not_cached, data)
+        )
 
         return online_streamer_to_tweet
 
@@ -143,7 +152,9 @@ class PostTweet:
         cls, live_list: list[dict]
     ) -> tuple[list[dict], list[TweetMetadata]]:
         """Defines streamers to receive new tweets and prepare the tweet list"""
-        not_cached_streamers: list[dict] = cls.remove_cached_from_tweet_list(live_list)
+        not_cached_streamers: list[dict] = cls.remove_cached_from_tweet_list(
+            live_list
+        )
 
         live_tweet_metadata: list[Union[TweetMetadata, None]] = list(
             map(cls.generate_tweet_metadata, not_cached_streamers)
@@ -157,7 +168,9 @@ class PostTweet:
 
     @classmethod
     def tweet(cls, live_list: list[dict]) -> None:
-        not_cached_streamers, live_tweet_metadata = cls.handle_prepare_tweets(live_list)
+        not_cached_streamers, live_tweet_metadata = cls.handle_prepare_tweets(
+            live_list
+        )
 
         cls.handle_send_tweets(not_cached_streamers, live_tweet_metadata)
 
