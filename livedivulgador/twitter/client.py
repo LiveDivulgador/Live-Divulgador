@@ -38,6 +38,11 @@ class TwitterClient:
 
         return api
 
+    def get_user_id(self, user_name: str) -> int:
+        user = self._api.get_user(screen_name=user_name)
+
+        return user.id
+
     def send_tweet(self, tweet_metadata: TweetMetadata) -> None:
         message = Message.PROTOTYPE.value.format(
             tweet_metadata.twitter_display_name,
@@ -53,4 +58,4 @@ class TwitterClient:
             self._api.update_status(status=message)
             logger.info(f"{channel_name} tweet sent successfully")
         except Forbidden:
-            logger.error(f"Exception: {channel_name} tweet was already done")
+            logger.warning(f"Exception: {channel_name} tweet was already done")

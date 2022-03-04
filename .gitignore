@@ -141,3 +141,5 @@ streamers.csv
 dump.sql
 *_bak.py
 .vscode
+
+.env.*
