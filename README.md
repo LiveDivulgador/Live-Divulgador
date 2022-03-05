@@ -12,6 +12,7 @@
 Divulgador de Twitch streams de Ciência e Tecnologia, Artes e Artesanato e Criadores no Twitter
 
 ## 🙏 Agradecimentos
+
 O presente código foi desenvolvido pela comunidade [HubTech](https://github.com/aHub-Tech) a qual temos uma enorme gratidão pelo trabalho desenvolvido!
 
 Fica aqui o fork deles: [Fork do LiveDivulgador](https://github.com/aHub-Tech/Live-Divulgador)
@@ -23,6 +24,10 @@ Se você for um streamer e quiser ser divulgado pelo Live Divulgador, preencha o
 ## 💿 Instalação
 
 Para instalar as dependências do bot, sugerimos que verifique nossa [documentação de instalação](./docs/INSTALLATION.md).
+
+## Uso
+
+O bot funciona de forma simples e possui uma interface de comando para ser operada via terminal. Para mais informações verifique a [documentação da CLI](./docs/cli.md).
 
 ## 🤝 Colaboração
 

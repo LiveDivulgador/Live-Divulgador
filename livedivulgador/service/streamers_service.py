@@ -50,6 +50,12 @@ class StreamersService:
             session.commit()
 
     @staticmethod
+    def delete_streamer_by_name(name: str) -> None:
+        with Session() as session:
+            session.query(Streamer).filter(Streamer.name == name).delete()
+            session.commit()
+
+    @staticmethod
     def select_all_by_twitch_id() -> list[Streamer]:
         with Session() as session:
             statement = select(Streamer.twitch_id)
