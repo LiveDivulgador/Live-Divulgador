@@ -55,8 +55,7 @@ class PostTweet:
             data = VerifyOnlineStreamers.handle()
             cls.tweet(data)
         except Exception as e:
-            logger.error(e)
-            raise e
+            logger.error(f"Error: {e}, skipping this run...")
 
     @classmethod
     def generate_tweet_metadata(cls, data: dict) -> Union[TweetMetadata, None]:

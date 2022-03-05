@@ -10,14 +10,15 @@ from livedivulgador.bots.livedivulgador import LiveDivulgador
 from livedivulgador.handlers.create_streamer import CreateStreamerFromUsername
 from livedivulgador.plugins.plugin import Plugin
 from livedivulgador.plugins.twitter import TwitterPlugin
-from livedivulgador.plugins.twitter_alternative import TwitterAlternativePlugin
 from livedivulgador.service.streamers_service import StreamersService
 
 logger = getLogger(__name__)
 
 
 @click.group(context_settings=dict(help_option_names=["-h", "--help"]))
-@click.option("--debug", "-d", help="Enable debug logging", is_flag=True, default=False)
+@click.option(
+    "--debug", "-d", help="Enable debug logging", is_flag=True, default=False
+)
 def main(debug):
     basicConfig(
         format="%(asctime)s [%(levelname)8s] [%(threadName)20s] %(message)s",
@@ -53,7 +54,7 @@ def run():
     tl = Timeloop()
     tl.logger = logger
     execute = True
-    plugins = [TwitterPlugin, TwitterAlternativePlugin]
+    plugins = [TwitterPlugin]
     bots = create_bots(LiveDivulgador, plugins)
 
     def exec_bots(bots: list[LiveDivulgador]) -> None:
