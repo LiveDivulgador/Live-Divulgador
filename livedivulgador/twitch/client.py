@@ -1,9 +1,12 @@
 from typing import Union
-
+from time import sleep
 from httpx import get, post
-
+from logging import getLogger
 from livedivulgador.helpers.slice import slice_queue
 from livedivulgador.twitch.handlers import handle_response
+
+
+logger = getLogger(__name__)
 
 
 class TwitchClient:
@@ -58,6 +61,7 @@ class TwitchClient:
         """
         Obter informações sobre streams de vários usuários
         """
+        tries = 5
         streams = []
         user_ids_generator = slice_queue(user_ids)
 
@@ -65,7 +69,18 @@ class TwitchClient:
             query = "&user_id=".join(user_ids_slice)
             url = f"{self.base_url}helix/streams/?user_id={query}"
 
-            res = get(url, headers=self.auth_header)
+            for _ in range(tries):
+                try:
+                    res = get(url, headers=self.auth_header)
+                except Exception as e:
+                    err = e
+                    logger.error(f"{err}, retrying within a minute")
+                    sleep(60)
+                    continue
+                else:
+                    break
+            else:
+                raise err
 
             res_json = handle_response(res)
 

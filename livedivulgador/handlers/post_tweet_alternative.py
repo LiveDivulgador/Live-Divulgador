@@ -20,9 +20,14 @@ class PostTweetAlternative(PostTweet):
     }
 
     client_keys = ClientKeys(
-        CONSUMER_KEY_B, CONSUMER_SECRET_B, ACCESS_TOKEN_B, ACCESS_TOKEN_SECRET_B
+        CONSUMER_KEY_B,
+        CONSUMER_SECRET_B,
+        ACCESS_TOKEN_B,
+        ACCESS_TOKEN_SECRET_B,
     )
 
-    enabled_categories = LiveStreamCategories("LiveDivulgador2").enabled_categories
+    enabled_categories = LiveStreamCategories(
+        "LiveDivulgador2"
+    ).enabled_categories
 
     twitter_client = TwitterClient(client_keys)
