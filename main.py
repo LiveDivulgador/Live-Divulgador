@@ -16,9 +16,7 @@ logger = getLogger(__name__)
 
 
 @click.group(context_settings=dict(help_option_names=["-h", "--help"]))
-@click.option(
-    "--debug", "-d", help="Enable debug logging", is_flag=True, default=False
-)
+@click.option("--debug", "-d", help="Enable debug logging", is_flag=True, default=False)
 def main(debug):
     basicConfig(
         format="%(asctime)s [%(levelname)8s] [%(threadName)20s] %(message)s",
