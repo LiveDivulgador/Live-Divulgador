@@ -147,3 +147,4 @@ dump.sql
 # Other stuff
 
 docker-compose.dev.yml
+backups/*
