@@ -64,10 +64,13 @@ class PostTweet:
             0
         ].twitter_id
 
-        if twitter_id is None:
-            user_name = data["user_name"]
-        else:
+        try:
             user_name = cls.twitter_client.get_user_name(twitter_id)
+        except Exception as e:
+            user_name = data["user_name"]
+            logger.error(
+                f"Error: {e}, user not found, defaulting to Twitch id `{user_name}`..."
+            )
 
         live_title = data["title"]
         twitch_channel = f"https://twitch.tv/{data['user_login']}"
