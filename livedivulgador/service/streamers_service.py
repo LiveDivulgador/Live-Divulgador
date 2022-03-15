@@ -24,6 +24,17 @@ class StreamersService:
 
         return response
 
+    @staticmethod
+    def get_streamer_by_name(streamer_name: str) -> Streamer:
+        with Session() as session:
+            response = (
+                session.query(Streamer)
+                .filter(Streamer.name == streamer_name)
+                .all()
+            )[0]
+
+        return response
+
     @classmethod
     def create_streamer(cls, streamer: Streamer) -> None:
         with Session() as session:

@@ -1,8 +1,10 @@
+from asyncio import subprocess
+
 import warnings
-from datetime import timedelta
+from datetime import timedelta, datetime
 from logging import DEBUG, INFO, basicConfig, captureWarnings, getLogger
 from time import sleep
-
+import subprocess
 import click
 from timeloop import Timeloop
 
@@ -12,13 +14,16 @@ from livedivulgador.plugins.plugin import Plugin
 from livedivulgador.plugins.twitter import TwitterPlugin
 from livedivulgador.service.streamers_service import StreamersService
 
+from dotenv import load_dotenv
+from os import getenv
+
+load_dotenv()
+
 logger = getLogger(__name__)
 
 
 @click.group(context_settings=dict(help_option_names=["-h", "--help"]))
-@click.option(
-    "--debug", "-d", help="Enable debug logging", is_flag=True, default=False
-)
+@click.option("--debug", "-d", help="Enable debug logging", is_flag=True, default=False)
 def main(debug):
     basicConfig(
         format="%(asctime)s [%(levelname)8s] [%(threadName)20s] %(message)s",
@@ -91,6 +96,28 @@ def add(twitch_username, twitter_username):
 def rm(twitch_username):
     logger.info(f"Deleting streamer `{twitch_username}`")
     StreamersService.delete_streamer_by_name(twitch_username)
+
+
+@main.command("backup")
+@click.option("backup", "-b", help="Backup file")
+def backup(backup):
+    utc_now = datetime.utcnow().strftime("%Y-%m-%d_%H-%M-%S")
+    with open(f"./backups/{utc_now}.sql", "w") as f:
+        logger.info("Creating a backup .sql file")
+        command = [
+            "docker",
+            "exec",
+            "-it",
+            "livedivulgador_db",
+            "mysqldump",
+            f'-u{getenv("DATABASE_USER")}',
+            f'-p{getenv("DATABASE_PASSWORD")}',
+            "--all-databases",
+        ]
+
+        out = subprocess.run(command, capture_output=True).stdout
+
+        f.write(out.decode("utf-8"))
 
 
 if __name__ == "__main__":

@@ -8,6 +8,7 @@ from livedivulgador.handlers.verify_online_streamers import (
     VerifyOnlineStreamers,
 )
 from livedivulgador.helpers.timeout import TimeoutValue
+from livedivulgador.service.streamers_service import StreamersService
 from livedivulgador.twitch.categories import LiveStreamCategories
 from livedivulgador.twitch.tags import LiveStreamTags
 from livedivulgador.twitter.client import (
@@ -59,10 +60,20 @@ class PostTweet:
 
     @classmethod
     def generate_tweet_metadata(cls, data: dict) -> Union[TweetMetadata, None]:
+        twitter_id = StreamersService.get_streamer(data["user_id"])[
+            0
+        ].twitter_id
 
-        user_name = data["user_name"]
+        try:
+            user_name = cls.twitter_client.get_user_name(twitter_id)
+        except Exception as e:
+            user_name = data["user_name"]
+            logger.error(
+                f"Error: {e}, user not found, defaulting to Twitch id `{user_name}`..."
+            )
+
         live_title = data["title"]
-        twitch_channel = f"https://twitch.tv/{data['user_name']}"
+        twitch_channel = f"https://twitch.tv/{data['user_login']}"
         category = data["game_name"]
         tags = LiveStreamTags(category).tags
         thumbnail = ""

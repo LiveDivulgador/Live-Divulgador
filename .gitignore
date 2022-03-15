@@ -143,3 +143,8 @@ dump.sql
 .vscode
 
 .env.*
+
+# Other stuff
+
+docker-compose.dev.yml
+backups/*

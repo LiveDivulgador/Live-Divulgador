@@ -43,6 +43,11 @@ class TwitterClient:
 
         return user.id
 
+    def get_user_name(self, user_id: int) -> str:
+        user = self._api.get_user(user_id=user_id)
+
+        return user.screen_name
+
     def send_tweet(self, tweet_metadata: TweetMetadata) -> None:
         message = Message.PROTOTYPE.value.format(
             tweet_metadata.twitter_display_name,
