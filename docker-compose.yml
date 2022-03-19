@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
   app:
-    image: vcwild/livedivulgador_app:1.0
+    image: livedivulgador/livedivulgador_app:1.1.6
     container_name: livedivulgador_app
     depends_on:
       - db
@@ -15,7 +15,7 @@ services:
     restart: always
 
   db:
-    image: vcwild/livedivulgador_db:1.0
+    image: livedivulgador/livedivulgador_db:1.1.6
     container_name: livedivulgador_db
     environment:
       MARIADB_RANDOM_ROOT_PASSWORD: "yes"
