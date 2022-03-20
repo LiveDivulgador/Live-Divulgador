@@ -1,0 +1,8 @@
+SQLAlchemy
+click
+httpx
+mariadb
+python-dotenv
+pyyaml
+timeloop
+tweepy

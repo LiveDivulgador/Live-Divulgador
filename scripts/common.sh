@@ -1,6 +1,6 @@
 # project
 project_name="livedivulgador"
-author_name="vcwild"
+author_name="livedivulgador"
 
 # terminal color
 color_default="\e[39m"

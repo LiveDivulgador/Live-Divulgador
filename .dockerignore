@@ -157,3 +157,4 @@ src
 test
 Dockerfile
 docker/dump.sql
+backups/
