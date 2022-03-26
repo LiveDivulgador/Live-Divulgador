@@ -34,7 +34,7 @@ DROP TABLE IF EXISTS `streamers`;
 CREATE TABLE `streamers` (
   `id` int(16) unsigned NOT NULL AUTO_INCREMENT,
   `twitch_id` int(32) unsigned NOT NULL,
-  `twitter_id` int(32) unsigned DEFAULT NULL,
+  `twitter_id` int(64) unsigned DEFAULT NULL,
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
